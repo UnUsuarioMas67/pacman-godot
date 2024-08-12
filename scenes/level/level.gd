@@ -17,8 +17,6 @@ func _ready():
 	).call_deferred()
 	
 	GameEvents.player_death_started.connect(_on_player_death)
-	
-	Globals.current_level = self
 
 
 func play_intro():
