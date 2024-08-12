@@ -24,6 +24,8 @@ func _ready():
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("reset_game"):
 		get_tree().reload_current_scene()
+	if event.is_action_pressed("advance_level"):
+		GameEvents.level_completed.emit()
 
 
 func reload_level() -> void:
