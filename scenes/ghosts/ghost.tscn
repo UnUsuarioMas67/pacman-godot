@@ -1,10 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://bn4ntd2etxyom"]
+[gd_scene load_steps=8 format=3 uid="uid://bn4ntd2etxyom"]
 
 [ext_resource type="Script" path="res://scenes/ghosts/ghost.gd" id="1_528wb"]
 [ext_resource type="PackedScene" uid="uid://qhetx041xrm2" path="res://scenes/warp/warp_component.tscn" id="2_5w6a5"]
 [ext_resource type="SpriteFrames" uid="uid://cumhwwmde070i" path="res://resources/ghosts/blinky_frames.tres" id="2_81ade"]
 [ext_resource type="AudioStream" uid="uid://d3cjpfq7jowh1" path="res://assets/sfx/eat_ghost.wav" id="4_7skyn"]
-[ext_resource type="AudioStream" uid="uid://dau5r72pjb1ye" path="res://assets/sfx/retreating.wav" id="5_lf64k"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lrcld"]
 size = Vector2(14, 14)
@@ -50,12 +49,7 @@ debug_color = Color(0.847059, 0.729412, 0.0941176, 0.419608)
 
 [node name="WarpComponent" parent="." instance=ExtResource("2_5w6a5")]
 
-[node name="Sounds" type="Node" parent="."]
-
-[node name="EatenSound" type="AudioStreamPlayer" parent="Sounds"]
+[node name="EatenSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_7skyn")
-
-[node name="RetreatSound" type="AudioStreamPlayer" parent="Sounds"]
-stream = ExtResource("5_lf64k")
 
 [node name="HomeExitTimer" type="Timer" parent="."]

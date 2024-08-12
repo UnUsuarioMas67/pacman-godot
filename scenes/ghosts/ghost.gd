@@ -43,8 +43,7 @@ var _draw_params: Dictionary = {
 @onready var animated_sprite = $AnimatedSprite2D
 @onready var intersection_collider: Area2D = $IntersectionCollider
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
-@onready var eaten_sound: AudioStreamPlayer = $Sounds/EatenSound
-@onready var retreat_sound: AudioStreamPlayer = $Sounds/RetreatSound
+@onready var eaten_sound: AudioStreamPlayer = $EatenSound
 @onready var home_exit_timer: Timer = $HomeExitTimer
 
 
@@ -155,8 +154,6 @@ func _set_state(new_state: State):
 	
 	if new_state != State.SCARED and new_state != State.DEAD:
 		_current_move_speed = NORMAL_MOVE_SPEED
-	if new_state != State.DEAD:
-		retreat_sound.stop()
 	
 	var prev_state = current_state
 	current_state = new_state
@@ -185,8 +182,6 @@ func _try_leaving_home() -> void:
 
 func _play_death_sound() -> void:
 	eaten_sound.play()
-	await eaten_sound.finished
-	retreat_sound.play()
 
 
 func _turn_around():
@@ -359,8 +354,8 @@ func _on_intersection_collider_area_entered(area: Area2D):
 		_choose_next_direction(area)
 	elif area.is_in_group("entrance") && current_state == State.DEAD:
 		await _enter_home().finished
-		GameEvents.ghost_reformed.emit()
 		current_state = _queue_state
+		GameEvents.ghost_reformed.emit()
 		await _exit_home().finished
 
 

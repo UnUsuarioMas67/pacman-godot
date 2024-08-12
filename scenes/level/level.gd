@@ -9,11 +9,14 @@ var pills_eaten: int = 0
 
 @onready var actors: Node2D = $Actors
 @onready var intro_sound: AudioStreamPlayer = $Sounds/IntroSound
+@onready var ghost_retreat_sound: AudioStreamPlayer = $Sounds/GhostRetreatSound
 
 
 func _ready():
 	GameEvents.pill_collected.connect(_on_pill_collected)
 	GameEvents.player_death_started.connect(_on_player_death)
+	GameEvents.ghost_eaten.connect(_on_ghost_eaten)
+	GameEvents.ghost_reformed.connect(_on_ghost_reformed)
 	
 	Callable(func ():
 		total_pills = get_tree().get_nodes_in_group("pill").size()
@@ -43,6 +46,8 @@ func play_intro():
 
 
 func _on_player_death():
+	ghost_retreat_sound.stop()
+	
 	var ghosts = get_tree().get_nodes_in_group("ghost") as Array[Ghost]
 	for ghost in ghosts:
 		ghost.is_active = false
@@ -57,3 +62,17 @@ func _on_pill_collected():
 	
 	if pills_eaten == total_pills:
 		GameEvents.level_completed.emit()
+
+
+func _on_ghost_eaten():
+	if !ghost_retreat_sound.playing:
+		ghost_retreat_sound.play()
+
+
+func _on_ghost_reformed():
+	var ghosts = get_tree().get_nodes_in_group("ghost") as Array[Ghost]
+	for ghost in ghosts:
+		if ghost.current_state == Ghost.State.DEAD:
+			return
+	
+	ghost_retreat_sound.stop()
