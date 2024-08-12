@@ -321,6 +321,7 @@ collision_mask = 17
 motion_mode = 1
 wall_min_slide_angle = 0.0
 script = ExtResource("1_otve2")
+is_invincible = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

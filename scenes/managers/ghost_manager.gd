@@ -1,5 +1,13 @@
 extends Node
 
+# SFX
+const SIREN_1: AudioStreamWAV = preload("res://assets/sfx/siren_1.wav")
+const SIREN_2: AudioStreamWAV = preload("res://assets/sfx/siren_2.wav")
+const SIREN_3: AudioStreamWAV = preload("res://assets/sfx/siren_3.wav")
+const SIREN_4: AudioStreamWAV = preload("res://assets/sfx/siren_4.wav")
+const POWER_PELLET: AudioStreamWAV = preload("res://assets/sfx/power_pellet.wav")
+
+# State Constants
 const CHASE_DURATION := 20.0
 const SCATTER_DURATION := 7.0
 const SCARED_DURATION := 10.0
@@ -10,6 +18,7 @@ var wave := 1
 
 @onready var scare_timer = $ScareTimer
 @onready var state_timer: Timer = $StateTimer
+@onready var asp: AudioStreamPlayer = $AudioStreamPlayer
 
 
 func _ready():
@@ -28,6 +37,29 @@ func _ready():
 	
 	await get_tree().physics_frame
 	GameEvents.global_ghost_state_updated.emit(global_state, !scare_timer.is_stopped())
+	_play_siren()
+
+
+func _play_siren():
+	if not scare_timer.is_stopped():
+		asp.stream = POWER_PELLET
+		asp.play()
+		return
+	
+	var new_stream: AudioStreamWAV = SIREN_1
+	
+	match wave:
+		2:
+			new_stream = SIREN_2
+		3:
+			new_stream = SIREN_3
+		4:
+			new_stream = SIREN_4
+	
+	if !asp.playing or new_stream != asp.stream:
+		asp.stream = new_stream
+		asp.play()
+
 
 
 func _enter_chase():
@@ -48,6 +80,7 @@ func _enter_scatter():
 			else SCATTER_DURATION - 2.0
 	)
 	state_timer.start(scatter_duration)
+	_play_siren()
 
 
 func _on_state_timer_timeout():
@@ -63,11 +96,13 @@ func _on_big_pill_collected():
 	state_timer.paused = true
 	
 	scare_timer.start()
+	_play_siren()
 	GameEvents.global_ghost_state_updated.emit(global_state, !scare_timer.is_stopped())
 
 
 func _on_scare_timer_timeout():
 	state_timer.paused = false
+	_play_siren()
 	GameEvents.global_ghost_state_updated.emit(global_state, !scare_timer.is_stopped())
 
 

@@ -10,3 +10,6 @@ one_shot = true
 
 [node name="ScareTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+volume_db = -5.0
