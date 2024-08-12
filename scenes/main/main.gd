@@ -2,6 +2,8 @@ extends Node2D
 
 const LEVEL_SCENE: PackedScene = preload("res://scenes/level/level.tscn")
 
+var current_level: int = 1
+
 @onready var level: Level = $Level
 @onready var lives_manager: LivesManager = $LivesManager
 
@@ -10,9 +12,12 @@ func _ready():
 	GameEvents.level_completed.connect(
 		func():
 			await get_tree().create_timer(0.5).timeout
+			current_level += 1
+			GameEvents.level_changed.emit(current_level)
 			reload_level()
 	)
 	
+	GameEvents.level_changed.emit(current_level)
 	_initialize_level(level)
 
 
