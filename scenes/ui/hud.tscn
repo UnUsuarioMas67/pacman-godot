@@ -1,5 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://owisq13qtfy6"]
+[gd_scene load_steps=6 format=3 uid="uid://owisq13qtfy6"]
 
+[ext_resource type="Script" path="res://scenes/ui/hud.gd" id="1_d4m0e"]
 [ext_resource type="Texture2D" uid="uid://ci3me2r30yjg1" path="res://assets/sprites/maze/maze_tileset.png" id="1_qccms"]
 [ext_resource type="Texture2D" uid="uid://cqa30634423xt" path="res://assets/sprites/pac-man/pacman.png" id="2_jtn3v"]
 
@@ -20,6 +21,7 @@ z_index = 12
 offset_right = 112.0
 offset_bottom = 129.0
 theme_override_constants/separation = 0
+script = ExtResource("1_d4m0e")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 2
