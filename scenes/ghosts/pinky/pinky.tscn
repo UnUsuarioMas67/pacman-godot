@@ -1,0 +1,11 @@
+[gd_scene load_steps=4 format=3 uid="uid://blm40iaro44uy"]
+
+[ext_resource type="PackedScene" uid="uid://bn4ntd2etxyom" path="res://scenes/ghosts/ghost.tscn" id="1_80llw"]
+[ext_resource type="Script" path="res://scenes/ghosts/pinky/pinky.gd" id="2_5wk8u"]
+[ext_resource type="SpriteFrames" uid="uid://c6wnd87txy07v" path="res://resources/ghosts/pinky_frames.tres" id="2_rervn"]
+
+[node name="Pinky" instance=ExtResource("1_80llw")]
+script = ExtResource("2_5wk8u")
+
+[node name="AnimatedSprite2D" parent="." index="3"]
+sprite_frames = ExtResource("2_rervn")

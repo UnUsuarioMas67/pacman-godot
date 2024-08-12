@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://kcs6kemld525"]
+
+[ext_resource type="Script" path="res://scenes/managers/ghost_manager.gd" id="1_1p6n4"]
+
+[node name="GhostManager" type="Node"]
+script = ExtResource("1_1p6n4")
+
+[node name="ScatterTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="ChaseTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="ScareTimer" type="Timer" parent="."]
+one_shot = true

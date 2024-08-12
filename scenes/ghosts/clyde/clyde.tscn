@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://80skguk1srk7"]
+
+[ext_resource type="PackedScene" uid="uid://bn4ntd2etxyom" path="res://scenes/ghosts/ghost.tscn" id="1_l20wi"]
+[ext_resource type="Script" path="res://scenes/ghosts/clyde/clyde.gd" id="2_lh08y"]
+[ext_resource type="SpriteFrames" uid="uid://dkqtgwxucpgs7" path="res://resources/ghosts/clyde_frames.tres" id="2_yq0kq"]
+
+[node name="Clyde" instance=ExtResource("1_l20wi")]
+script = ExtResource("2_lh08y")
+initial_state = 3
+
+[node name="AnimatedSprite2D" parent="." index="3"]
+sprite_frames = ExtResource("2_yq0kq")
+
+[node name="ChaseTimer" type="Timer" parent="." index="8"]
+one_shot = true

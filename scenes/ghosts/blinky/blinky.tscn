@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://11bm6mg760wu"]
+
+[ext_resource type="PackedScene" uid="uid://bn4ntd2etxyom" path="res://scenes/ghosts/ghost.tscn" id="1_6insg"]
+[ext_resource type="Script" path="res://scenes/ghosts/blinky/blinky.gd" id="2_ecaqy"]
+
+[node name="Blinky" groups=["blinky"] instance=ExtResource("1_6insg")]
+script = ExtResource("2_ecaqy")
+
+[node name="AnimatedSprite2D" parent="." index="3"]
+animation = &"move_right"
