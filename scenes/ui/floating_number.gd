@@ -11,7 +11,7 @@ var _value: int = 0
 static func create(parent: Node2D, value: int):
 	var floating_number: FloatingNumber = FLOATING_NUMBER.instantiate()
 	floating_number._value = value
-	floating_number.global_position = parent.global_position
+	floating_number.global_position = parent.global_position + Vector2(0, -4)
 	parent.add_child(floating_number)
 
 
@@ -20,6 +20,6 @@ func _ready() -> void:
 	label.text = str(_value)
 	
 	var tween: Tween = create_tween()
-	tween.tween_property(self, "position:y", position.y - 4, .2)
+	tween.tween_interval(0.3)
 	tween.tween_callback(queue_free)
 	
