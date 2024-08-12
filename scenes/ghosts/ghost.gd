@@ -342,5 +342,5 @@ func _print_state_debug_info(new_state: State):
 	
 	print_rich(
 		"[color={0}][{1}][/color] ".format([debug_color, name])
-		+ "Entering [color={0}]{1}[/color] State".format([debug_color, state_name]) 
+		+ "Entering [color=magenta]{0}[/color] State".format([state_name]) 
 	)
