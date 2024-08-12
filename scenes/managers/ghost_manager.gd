@@ -61,6 +61,9 @@ func _play_siren():
 		asp.play()
 
 
+func _stop_siren() -> void:
+	asp.stop()
+
 
 func _enter_chase():
 	global_state = Ghost.State.CHASE
@@ -115,7 +118,7 @@ func _on_level_intro_finished():
 
 
 func _on_player_death_started():
-	asp.stop()
+	_stop_siren()
 	state_timer.paused = true
 	scare_timer.stop()
 
