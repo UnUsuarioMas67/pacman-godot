@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://dluj0yt5jbyjb"]
+[gd_scene load_steps=12 format=3 uid="uid://dluj0yt5jbyjb"]
 
 [ext_resource type="Script" path="res://scenes/level/level.gd" id="1_6vwv8"]
 [ext_resource type="TileSet" uid="uid://cgitdssnis6gk" path="res://resources/maze.tres" id="1_fw2l1"]
+[ext_resource type="Script" path="res://scenes/level/DebugDisplay.gd" id="3_c3rv0"]
 [ext_resource type="PackedScene" uid="uid://wlsnalpplhnr" path="res://scenes/player/player.tscn" id="5_iye3q"]
 [ext_resource type="PackedScene" uid="uid://11bm6mg760wu" path="res://scenes/ghosts/blinky/blinky.tscn" id="6_nbns2"]
 [ext_resource type="PackedScene" uid="uid://blm40iaro44uy" path="res://scenes/ghosts/pinky/pinky.tscn" id="7_k4kf8"]
@@ -17,6 +18,34 @@ radius = 4.0
 script = ExtResource("1_6vwv8")
 
 [node name="GhostManager" parent="." instance=ExtResource("10_7ag1a")]
+
+[node name="DebugDisplay" type="VBoxContainer" parent="GhostManager"]
+z_index = 10
+offset_left = 72.0
+offset_top = 40.0
+offset_right = 112.0
+offset_bottom = 80.0
+alignment = 1
+script = ExtResource("3_c3rv0")
+
+[node name="StateTime" type="Label" parent="GhostManager/DebugDisplay"]
+layout_mode = 2
+text = "00
+"
+horizontal_alignment = 1
+
+[node name="State" type="Label" parent="GhostManager/DebugDisplay"]
+layout_mode = 2
+text = "Scatter"
+horizontal_alignment = 1
+
+[node name="ScareTime" type="Label" parent="GhostManager/DebugDisplay"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.32549, 0.32549, 1, 1)
+text = "00
+"
+horizontal_alignment = 1
 
 [node name="ColorRect" type="ColorRect" parent="."]
 z_index = 10
