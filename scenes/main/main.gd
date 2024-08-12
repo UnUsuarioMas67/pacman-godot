@@ -12,10 +12,7 @@ func _ready():
 			reload_level()
 	)
 	
-	level.play_intro()
-	level.stopped.connect(func():
-		level.play_intro()
-	)
+	_initialize_level(level)
 
 
 func _input(event: InputEvent) -> void:
@@ -30,7 +27,12 @@ func reload_level() -> void:
 	var new_level = LEVEL_SCENE.instantiate()
 	add_child(new_level)
 	
+	_initialize_level(new_level)
+
+
+func _initialize_level(new_level: Level):
 	new_level.play_intro()
 	new_level.stopped.connect(func():
 		level.play_intro()
 	)
+	
