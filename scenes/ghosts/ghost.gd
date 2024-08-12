@@ -32,6 +32,7 @@ var _shape_query := PhysicsShapeQueryParameters2D.new()
 var _can_move := true
 var _home_node: Node2D
 var _home_tween: Tween
+var _blink_tween: Tween
 var _already_left_home: bool = false
 var _draw_params: Dictionary = {
 	"pivot": null,
@@ -348,6 +349,24 @@ func _enter_home() -> Tween:
 		_home_tween.parallel().tween_callback(_force_direction.bind(face_dir))
 	
 	return _home_tween
+
+
+func _start_blink() -> void:
+	if _blink_tween and _blink_tween.is_running():
+		return
+	
+	_blink_tween = create_tween().set_loops()
+	_blink_tween.tween_property(animated_sprite, "visible", false, 0.0).from(true).set_delay(0.1)
+	_blink_tween.tween_property(animated_sprite, "visible", true, 0.0).set_delay(0.1)
+
+
+func _stop_blink() -> void:
+	if !_blink_tween:
+		return
+	if !_blink_tween.is_running():
+		return
+	
+	_blink_tween.kill()
 #endregion
 
 #region Signal Callables
