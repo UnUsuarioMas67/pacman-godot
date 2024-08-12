@@ -99,7 +99,7 @@ func _handle_animation():
 	else:
 		animation_player.play("move")
 	
-	if current_direction != Vector2.ZERO:
+	if current_direction != Vector2.ZERO and Engine.time_scale > 0:
 		animated_sprite.rotation = current_direction.angle()
 
 
