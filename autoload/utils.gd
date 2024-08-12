@@ -11,3 +11,9 @@ func is_direction_free(
 	shape_query_params.transform = body.global_transform.translated(shape_query_params.shape.get_rect().size * direction)
 	var result = body.get_world_2d().direct_space_state.intersect_shape(shape_query_params)
 	return result.size() == 0
+
+
+func freeze_frame(duration):
+	Engine.time_scale = 0.0
+	await get_tree().create_timer(duration, true, false, true).timeout
+	Engine.time_scale = 1.0

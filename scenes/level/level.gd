@@ -65,6 +65,7 @@ func _on_pill_collected():
 
 
 func _on_ghost_eaten():
+	Utils.freeze_frame(0.5)
 	if !ghost_retreat_sound.playing:
 		ghost_retreat_sound.play()
 
