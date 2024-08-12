@@ -74,7 +74,7 @@ move_right={
 2d_physics/layer_3="ghosts"
 2d_physics/layer_4="collectibles"
 2d_physics/layer_5="pen_gate"
-2d_physics/layer_6="pathfinding"
+2d_physics/layer_6="ai_stuff"
 
 [rendering]
 
