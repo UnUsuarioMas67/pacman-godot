@@ -7,6 +7,6 @@ func is_direction_free(
 		direction: Vector2, 
 		delta: float
 ) -> bool:
-	shape_query_params.transform = body.global_transform.translated(move_speed * direction * delta * 2)
+	shape_query_params.transform = body.global_transform.translated(move_speed * direction * delta * 3)
 	var result = body.get_world_2d().direct_space_state.intersect_shape(shape_query_params)
 	return result.size() == 0
