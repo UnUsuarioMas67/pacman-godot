@@ -127,6 +127,9 @@ func _on_scare_timer_timeout():
 
 
 func _print_debug_info(state: Ghost.State, scared_mode: bool):
+	if !OS.is_debug_build():
+		return
+	
 	var state_name = "SCATTER" if state == Ghost.State.SCATTER else "CHASE"
 	
 	print_rich(

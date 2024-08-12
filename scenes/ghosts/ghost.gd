@@ -410,6 +410,9 @@ func _on_global_ghost_state_updated(global_state: Ghost.State, scared_mode: bool
 
 #region Debug Methods
 func _print_pathfinding_debug_info(available_directions: Array[Vector2], chosen_direction: Vector2):
+	if !OS.is_debug_build():
+		return
+	
 	var directions_to_text = available_directions.map(func(dir):
 		if dir == Vector2.UP:
 			return "UP"
@@ -445,6 +448,9 @@ func _print_pathfinding_debug_info(available_directions: Array[Vector2], chosen_
 
 
 func _print_state_debug_info(new_state: State):
+	if !OS.is_debug_build():
+		return
+	
 	var state_name = ""
 	match new_state:
 		State.CHASE:
