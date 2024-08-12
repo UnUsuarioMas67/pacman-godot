@@ -1,7 +1,7 @@
 extends Node
 class_name LivesManager
 
-signal lives_updated
+signal lives_updated(new_lives: int)
 
 @export var starting_lives: int = 3
 
@@ -15,4 +15,4 @@ func _ready() -> void:
 
 func _on_player_death() -> void:
 	lives = max(lives - 1, 0)
-	lives_updated.emit()
+	lives_updated.emit(lives)
