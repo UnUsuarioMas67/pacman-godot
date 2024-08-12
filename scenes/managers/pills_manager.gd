@@ -6,9 +6,8 @@ var pills_left: int = 0
 
 func _ready():
 	GameEvents.pill_collected.connect(_on_pill_collected)
-	Callable(
-		func():
-			total_pills = get_tree().get_nodes_in_group("pill").size()
+	Callable(func ():
+		total_pills = get_tree().get_nodes_in_group("pill").size()
 	).call_deferred()
 
 
