@@ -60,6 +60,7 @@ func _ready():
 	_shape_query.collision_mask = 0b10001
 	_home_node = get_tree().get_first_node_in_group(home_position_group)
 	
+	_tween = create_tween()
 	current_state = initial_state
 	
 	# PRINT SCATTER NODE WARNING
@@ -98,9 +99,13 @@ func _draw() -> void:
 
 func _set_is_active(value: bool):
 	if value:
-		animated_sprite.pause()
-	else:
+		if _tween.is_valid() and !_tween.is_running():
+			_tween.play()
 		animated_sprite.play()
+	else:
+		if _tween.is_valid() and _tween.is_running():
+			_tween.pause()
+		animated_sprite.pause()
 	
 	is_active = value
 
@@ -114,6 +119,7 @@ func reset():
 		_tween.kill()
 	
 	_already_left_home = false
+	_can_move = true
 	animated_sprite.play("move_down")
 	_force_direction(Vector2.ZERO)
 	current_state = initial_state
