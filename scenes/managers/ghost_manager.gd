@@ -34,10 +34,12 @@ func _ready():
 	scare_timer.timeout.connect(_on_scare_timer_timeout)
 	
 	GameEvents.global_ghost_state_updated.connect(_print_debug_info)
+	GameEvents.player_death_started.connect(func(): asp.stop())
 	
 	await get_tree().physics_frame
 	GameEvents.global_ghost_state_updated.emit(global_state, !scare_timer.is_stopped())
-	_play_siren()
+	var level: Level = owner as Level
+	level.intro_finished.connect(_play_siren)
 
 
 func _play_siren():
@@ -106,8 +108,8 @@ func _on_scare_timer_timeout():
 	GameEvents.global_ghost_state_updated.emit(global_state, !scare_timer.is_stopped())
 
 
-func _print_debug_info(global_state: Ghost.State, scared_mode: bool):
-	var state_name = "SCATTER" if global_state == Ghost.State.SCATTER else "CHASE"
+func _print_debug_info(state: Ghost.State, scared_mode: bool):
+	var state_name = "SCATTER" if state == Ghost.State.SCATTER else "CHASE"
 	
 	print_rich(
 		"[color=yellow][GHOST_MANAGER][/color] Global State: [color=magenta]{0}[/color]. ".format([state_name])
