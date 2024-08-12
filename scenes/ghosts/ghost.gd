@@ -107,7 +107,7 @@ func _set_is_active(value: bool):
 	if !_tween or !_tween.is_valid():
 		return
 	
-	if value and !_tween.is_running():
+	if value and !_tween.is_running() and !_tween.is_valid():
 		_tween.play()
 	elif !value and _tween.is_running():
 		_tween.pause()
