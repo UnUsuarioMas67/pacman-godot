@@ -92,6 +92,8 @@ func _set_state(new_state: State):
 	var prev_state = current_state
 	current_state = new_state
 	
+	_print_state_debug_info(new_state)
+	
 	# prevents the ghost from turning around
 	if prev_state == State.HOME or new_state == State.HOME:
 		return
@@ -202,34 +204,7 @@ func _choose_next_direction(node: Area2D) -> void:
 	)
 	
 	# DEBUG INFORMATION
-	var directions_to_text = available_directions.map(func(dir):
-		if dir == Vector2.UP:
-			return "UP"
-		if dir == Vector2.LEFT:
-			return "LEFT"
-		if dir == Vector2.DOWN:
-			return "DOWN"
-		if dir == Vector2.RIGHT:
-			return "RIGHT"
-		
-		return "WHAT"
-	)
-	
-	print_rich(
-		"[color={0}][{1}][/color] ".format([debug_color, name])
-		+ "Available directions: [color=white]" 
-		+ str(directions_to_text) + "[/color]"
-	)
-	print_rich(
-		"[color={0}][{1}][/color] ".format([debug_color, name])
-		+ "Next direction: [color=white]" 
-		+ (
-				directions_to_text[available_directions.find(next_direction)]
-				if available_directions.has(next_direction)
-				else "NONE"
-		)
-		+ "[/color]"
-	)
+	_print_pathfinding_debug_info(available_directions, next_direction)
 
 
 func _exit_home() -> Tween:
@@ -317,3 +292,55 @@ func _on_thirty_pills_collected():
 	if current_state == State.HOME:
 		await _exit_home().finished
 		current_state = queue_state
+
+
+func _print_pathfinding_debug_info(available_directions: Array[Vector2], chosen_direction: Vector2):
+	var directions_to_text = available_directions.map(func(dir):
+		if dir == Vector2.UP:
+			return "UP"
+		if dir == Vector2.LEFT:
+			return "LEFT"
+		if dir == Vector2.DOWN:
+			return "DOWN"
+		if dir == Vector2.RIGHT:
+			return "RIGHT"
+		
+		return "WHAT"
+	)
+	
+	print_rich(
+		"[color={0}][{1}][/color] ".format([debug_color, name])
+		+ "Available directions: [color=white]" 
+		+ str(directions_to_text) if directions_to_text.size() > 0 else "NONE" 
+		+ "[/color]"
+	)
+	print_rich(
+		"[color={0}][{1}][/color] ".format([debug_color, name])
+		+ "Next direction: [color=white]" 
+		+ (
+				directions_to_text[available_directions.find(chosen_direction)]
+				if available_directions.has(chosen_direction)
+				else "NONE"
+		)
+		+ "[/color]"
+	)
+
+
+func _print_state_debug_info(new_state: State):
+	var state_name = ""
+	match new_state:
+		State.CHASE:
+			state_name = "CHASE"
+		State.SCATTER:
+			state_name = "SCATTER"
+		State.HOME:
+			state_name = "HOME"
+		State.SCARED:
+			state_name = "SCARED"
+		State.DEAD:
+			state_name = "DEAD"
+	
+	print_rich(
+		"[color={0}][{1}][/color] ".format([debug_color, name])
+		+ "Entering [color={0}]{1}[/color] State".format([debug_color, state_name]) 
+	)
