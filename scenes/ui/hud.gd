@@ -6,6 +6,7 @@ const LIFE_SCENE: PackedScene = preload("res://scenes/ui/life.tscn")
 @export var lives_manager: LivesManager
 
 @onready var score_value: Label = %ScoreValue
+@onready var high_score_value: Label = %HighScoreValue
 @onready var lives_container: HBoxContainer = %LivesContainer
 @onready var level: Label = %Level
 
@@ -15,7 +16,10 @@ func _ready() -> void:
 	lives_manager.lives_updated.connect(_on_lives_updated)
 	GameEvents.level_changed.connect(_on_level_changed)
 	
-	await lives_manager.ready
+	high_score_value.text = "%07d" % UserData.save_data["high_score"]
+	
+	#wait for the lives_manager to be ready so that starting_lives is initialized
+	await lives_manager.ready 
 	for life in lives_container.get_children():
 		life.queue_free()
 	
