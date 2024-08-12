@@ -38,7 +38,8 @@ func _ready():
 func reset():
 	global_position = _start_position
 	
-	animated_sprite.play("default")
+	animated_sprite.animation = "default"
+	animated_sprite.frame = 0
 	rotation = 0
 	Callable(func ():
 		hurtbox_shape.disabled = false
@@ -80,7 +81,7 @@ func _emit_player_death_finished():
 
 func _set_is_active(value: bool):
 	if !value:
-		animated_sprite.pause()
+		animation_player.pause()
 	
 	is_active = value
 
