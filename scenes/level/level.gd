@@ -12,11 +12,13 @@ var pills_eaten: int = 0
 
 func _ready():
 	GameEvents.pill_collected.connect(_on_pill_collected)
+	GameEvents.player_death_started.connect(_on_player_death)
+	
 	Callable(func ():
 		total_pills = get_tree().get_nodes_in_group("pill").size()
 	).call_deferred()
 	
-	GameEvents.player_death_started.connect(_on_player_death)
+	Globals.current_level = self
 
 
 func play_intro():

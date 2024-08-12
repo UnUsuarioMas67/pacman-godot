@@ -8,6 +8,7 @@
 script = ExtResource("2_lh08y")
 initial_state = 3
 pills_required = 81
+home_exit_delay = 1.0
 home_position_group = "home_right"
 debug_color = "orange"
 
