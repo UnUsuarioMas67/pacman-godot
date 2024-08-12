@@ -1,4 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://bw7thqbtqe07l"]
+[gd_scene load_steps=5 format=3 uid="uid://bw7thqbtqe07l"]
+
+[ext_resource type="Script" path="res://scenes/title_screen/title_screen.gd" id="1_apc2b"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ak7hb"]
 font_size = 32
@@ -11,6 +13,7 @@ font_size = 8
 font_color = Color(1, 1, 0.152941, 1)
 
 [node name="TitleScreen" type="CanvasLayer"]
+script = ExtResource("1_apc2b")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 anchors_preset = 15
