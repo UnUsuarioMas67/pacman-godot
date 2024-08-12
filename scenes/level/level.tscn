@@ -20,27 +20,31 @@ script = ExtResource("1_6vwv8")
 
 [node name="GhostManager" parent="." instance=ExtResource("10_7ag1a")]
 
-[node name="DebugDisplay" type="VBoxContainer" parent="GhostManager"]
-z_index = 10
-offset_left = 72.0
-offset_top = 40.0
-offset_right = 112.0
-offset_bottom = 80.0
-alignment = 1
+[node name="DebugDisplay" type="CanvasLayer" parent="GhostManager"]
 script = ExtResource("3_c3rv0")
 
-[node name="StateTime" type="Label" parent="GhostManager/DebugDisplay"]
+[node name="VBoxContainer" type="VBoxContainer" parent="GhostManager/DebugDisplay"]
+offset_left = 72.0
+offset_top = 40.0
+offset_right = 128.0
+offset_bottom = 80.0
+alignment = 1
+
+[node name="StateTime" type="Label" parent="GhostManager/DebugDisplay/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "00
 "
 horizontal_alignment = 1
 
-[node name="State" type="Label" parent="GhostManager/DebugDisplay"]
+[node name="State" type="Label" parent="GhostManager/DebugDisplay/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Scatter"
 horizontal_alignment = 1
 
-[node name="ScareTime" type="Label" parent="GhostManager/DebugDisplay"]
+[node name="ScareTime" type="Label" parent="GhostManager/DebugDisplay/VBoxContainer"]
+unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0.32549, 0.32549, 1, 1)

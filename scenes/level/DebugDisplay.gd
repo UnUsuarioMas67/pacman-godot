@@ -1,10 +1,10 @@
-extends VBoxContainer
+extends CanvasLayer
 
 var ghost_manager: GhostManager
 
-@onready var state_time: Label = $StateTime
-@onready var state: Label = $State
-@onready var scare_time: Label = $ScareTime
+@onready var state_time: Label = %StateTime
+@onready var state: Label = %State
+@onready var scare_time: Label = %ScareTime
 
 
 func _ready() -> void:
