@@ -37,6 +37,7 @@ var shape_query := PhysicsShapeQueryParameters2D.new()
 
 func _ready():
 	GameEvents.pill_collected.connect(_on_pill_collected)
+	GameEvents.global_ghost_state_updated.connect(_on_global_ghost_state_updated)
 	intersection_collider.area_entered.connect(_on_intersection_collider_area_entered)
 	
 	shape_query.shape = collision_shape.shape
@@ -305,6 +306,14 @@ func _on_pill_collected():
 	if level.pills_eaten == pills_required:
 		await _exit_home().finished
 		current_state = queue_state
+
+
+func _on_global_ghost_state_updated(global_state: Ghost.State, scared_mode: bool):
+	if current_state == State.DEAD or current_state == State.HOME:
+		queue_state = global_state
+		return
+	
+	current_state = global_state if not scared_mode else State.SCARED
 
 
 func _print_pathfinding_debug_info(available_directions: Array[Vector2], chosen_direction: Vector2):

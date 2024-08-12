@@ -15,6 +15,8 @@ radius = 4.0
 [node name="Level" type="Node2D"]
 script = ExtResource("1_6vwv8")
 
+[node name="GhostManager" parent="." instance=ExtResource("10_7ag1a")]
+
 [node name="ColorRect" type="ColorRect" parent="."]
 z_index = 10
 offset_right = 208.0
@@ -102,5 +104,3 @@ scatter_node = NodePath("../../Maze/ScatterPoints/BottomLeft")
 [node name="Inky" parent="Actors" node_paths=PackedStringArray("scatter_node") instance=ExtResource("9_fc8ss")]
 position = Vector2(304, 156)
 scatter_node = NodePath("../../Maze/ScatterPoints/BottomRight")
-
-[node name="GhostManager" parent="." instance=ExtResource("10_7ag1a")]

@@ -5,10 +5,7 @@
 [node name="GhostManager" type="Node"]
 script = ExtResource("1_1p6n4")
 
-[node name="ScatterTimer" type="Timer" parent="."]
-one_shot = true
-
-[node name="ChaseTimer" type="Timer" parent="."]
+[node name="StateTimer" type="Timer" parent="."]
 one_shot = true
 
 [node name="ScareTimer" type="Timer" parent="."]
