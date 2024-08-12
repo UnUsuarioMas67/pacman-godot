@@ -17,7 +17,6 @@ atlas = ExtResource("2_jtn3v")
 region = Rect2(16, 0, 16, 16)
 
 [node name="Hud" type="VBoxContainer"]
-z_index = 12
 offset_right = 112.0
 offset_bottom = 129.0
 theme_override_constants/separation = 0
