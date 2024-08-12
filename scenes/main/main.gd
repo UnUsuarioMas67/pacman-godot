@@ -3,6 +3,7 @@ extends Node2D
 const LEVEL_SCENE: PackedScene = preload("res://scenes/level/level.tscn")
 
 @onready var level: Level = $Level
+@onready var lives_manager: LivesManager = $LivesManager
 
 
 func _ready():
@@ -33,6 +34,9 @@ func reload_level() -> void:
 func _initialize_level(new_level: Level):
 	new_level.play_intro()
 	new_level.stopped.connect(func():
-		level.play_intro()
+		if lives_manager.lives > 0:
+			level.play_intro()
+		else:
+			get_tree().reload_current_scene()
 	)
 	
