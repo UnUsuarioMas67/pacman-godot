@@ -23,7 +23,7 @@ var can_move := true
 var current_state: State : set = _set_state
 var queue_state: State
 var current_move_speed := NORMAL_MOVE_SPEED
-var current_direction := Vector2.RIGHT
+var current_direction := Vector2.LEFT
 var next_direction := Vector2.ZERO
 var target_position: Vector2
 var shape_query := PhysicsShapeQueryParameters2D.new()
