@@ -2,6 +2,7 @@ extends Node2D
 class_name Level
 
 signal intro_finished
+signal stopped
 
 var total_pills: int = 0
 var pills_eaten: int = 0
@@ -25,6 +26,8 @@ func play_intro():
 	for actor in actors.get_children():
 		if "is_active" in actor:
 			actor.is_active = false
+		if actor.has_method("reset"):
+			actor.reset()
 	
 	get_tree().paused = true
 	
@@ -46,7 +49,7 @@ func _on_player_death():
 	
 	await GameEvents.player_death_finished
 	await get_tree().create_timer(1.0).timeout
-	get_tree().reload_current_scene()
+	stopped.emit()
 
 
 func _on_pill_collected():

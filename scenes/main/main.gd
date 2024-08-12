@@ -11,3 +11,6 @@ func _ready():
 	)
 	
 	level.play_intro()
+	level.stopped.connect(func():
+		level.play_intro()
+	)
