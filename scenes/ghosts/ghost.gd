@@ -31,6 +31,11 @@ var _shape_query := PhysicsShapeQueryParameters2D.new()
 var _can_move := true
 var _home_node: Node2D
 var _tween: Tween
+var _draw_params: Dictionary = {
+	"pivot": null,
+	"chosen_dir": Vector2.ZERO,
+	"available_dir": [],
+}
 
 @onready var hurtbox_collision = $Hurtbox/CollisionShape2D
 @onready var animated_sprite = $AnimatedSprite2D
@@ -53,7 +58,7 @@ func _ready():
 	
 	# PRINT SCATTER NODE WARNING
 	assert(!!scatter_node, "[{0}] does not have a Scatter Node assigned".format([name]))
-	
+
 
 func _physics_process(delta):
 	if !is_active:
@@ -69,6 +74,20 @@ func _physics_process(delta):
 		velocity = _current_move_speed * _current_direction
 		move_and_slide()
 	_handle_animation()
+	queue_redraw()
+
+
+func _draw() -> void:
+	if !_draw_params["pivot"]:
+		return
+	
+	for dir in _draw_params["available_dir"]:
+		var from: Vector2 = to_local(_draw_params["pivot"].global_position)
+		var to: Vector2 = from + (16 * dir)
+		var color: Color = Color.MAGENTA if dir == _draw_params["chosen_dir"] else Color.GRAY
+		
+		draw_line(from, to, color)
+		draw_circle(to, 2, color)
 
 
 func _set_is_active(value: bool):
@@ -234,6 +253,7 @@ func _choose_next_direction(node: Node2D) -> void:
 	)
 	
 	# DEBUG INFORMATION
+	_draw_params["pivot"] = node
 	_print_pathfinding_debug_info(available_directions, _next_direction)
 
 
@@ -340,6 +360,9 @@ func _print_pathfinding_debug_info(available_directions: Array[Vector2], chosen_
 		
 		return "WHAT"
 	)
+	
+	_draw_params["chosen_dir"] = chosen_direction
+	_draw_params["available_dir"] = available_directions
 	
 	print_rich(
 		"[color={0}][{1}][/color] ".format([debug_color, name])
