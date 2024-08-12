@@ -57,3 +57,5 @@ stream = ExtResource("4_7skyn")
 
 [node name="RetreatSound" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("5_lf64k")
+
+[node name="HomeExitTimer" type="Timer" parent="."]

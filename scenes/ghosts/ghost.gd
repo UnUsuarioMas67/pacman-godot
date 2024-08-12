@@ -16,6 +16,7 @@ const DEAD_MOVE_SPEED := 120.0
 @export var initial_state: State
 @export var scatter_node: Node2D
 @export var pills_required := 0
+@export_range(0.0, 5.0, 0.1, "suffix:s") var home_exit_delay: float = 0.0
 @export_enum("home_left", "home_center", "home_right") var home_position_group := "home_center" 
 @export_enum("red", "pink", "cyan", "orange") var debug_color := "red"
 
@@ -31,6 +32,7 @@ var _shape_query := PhysicsShapeQueryParameters2D.new()
 var _can_move := true
 var _home_node: Node2D
 var _tween: Tween
+var _already_left_home: bool = false
 var _draw_params: Dictionary = {
 	"pivot": null,
 	"chosen_dir": Vector2.ZERO,
@@ -43,12 +45,16 @@ var _draw_params: Dictionary = {
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 @onready var eaten_sound: AudioStreamPlayer = $Sounds/EatenSound
 @onready var retreat_sound: AudioStreamPlayer = $Sounds/RetreatSound
+@onready var home_exit_timer: Timer = $HomeExitTimer
 
 
 func _ready():
 	GameEvents.pill_collected.connect(_on_pill_collected)
 	GameEvents.global_ghost_state_updated.connect(_on_global_ghost_state_updated)
 	intersection_collider.area_entered.connect(_on_intersection_collider_area_entered)
+	
+	if home_exit_delay > 0.0:
+		home_exit_timer.wait_time = home_exit_delay
 	
 	_shape_query.shape = collision_shape.shape
 	_shape_query.collision_mask = 0b10001
@@ -107,6 +113,7 @@ func reset():
 	if _tween:
 		_tween.kill()
 	
+	_already_left_home = false
 	animated_sprite.play("move_down")
 	_force_direction(Vector2.ZERO)
 	current_state = initial_state
@@ -158,6 +165,11 @@ func _try_leaving_home() -> void:
 		return
 	
 	if Globals.current_level.pills_eaten >= pills_required:
+		if !_already_left_home and home_exit_delay > 0.0:
+			home_exit_timer.start()
+			_already_left_home = true
+			await home_exit_timer.timeout
+		
 		await _exit_home().finished
 		current_state = _queue_state
 
