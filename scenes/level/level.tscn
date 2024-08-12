@@ -21,6 +21,7 @@ script = ExtResource("1_6vwv8")
 [node name="GhostManager" parent="." instance=ExtResource("10_7ag1a")]
 
 [node name="DebugDisplay" type="CanvasLayer" parent="GhostManager"]
+visible = false
 script = ExtResource("3_c3rv0")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="GhostManager/DebugDisplay"]

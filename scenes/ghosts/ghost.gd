@@ -84,7 +84,7 @@ func _physics_process(delta):
 
 
 func _draw() -> void:
-	if !_draw_params["pivot"]:
+	if !_draw_params["pivot"] or !Globals.debug_mode:
 		return
 	
 	for dir in _draw_params["available_dir"]:

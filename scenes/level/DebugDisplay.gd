@@ -12,6 +12,8 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	visible = Globals.debug_mode
+	
 	state_time.text = "%3.1f" % ghost_manager.state_timer.time_left
 	state.text = (
 			"Scatter" if ghost_manager.global_state == Ghost.State.SCATTER
