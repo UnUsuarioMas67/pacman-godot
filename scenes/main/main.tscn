@@ -1,11 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://dt74l2dd8283d"]
+[gd_scene load_steps=6 format=3 uid="uid://dt74l2dd8283d"]
 
 [ext_resource type="Script" path="res://scenes/main/main.gd" id="1_bsbh1"]
 [ext_resource type="PackedScene" uid="uid://cuyvu60xdcltl" path="res://scenes/managers/lives_manager.tscn" id="2_3s5kq"]
 [ext_resource type="PackedScene" uid="uid://bj8js38uy8iiw" path="res://scenes/managers/score_manager.tscn" id="2_6cvu2"]
 [ext_resource type="PackedScene" uid="uid://dluj0yt5jbyjb" path="res://scenes/level/level.tscn" id="2_jqutv"]
-[ext_resource type="Script" path="res://scenes/main/ScoreManagerDebug.gd" id="3_gnivt"]
-[ext_resource type="Script" path="res://scenes/main/LivesManagerDebug.gd" id="3_ukfbq"]
 [ext_resource type="PackedScene" uid="uid://owisq13qtfy6" path="res://scenes/ui/hud.tscn" id="7_f6882"]
 
 [node name="Main" type="Node2D"]
@@ -23,31 +21,6 @@ lives_manager = NodePath("../../LivesManager")
 
 [node name="LivesManager" parent="." instance=ExtResource("2_3s5kq")]
 
-[node name="LivesManagerDebug" type="Label" parent="LivesManager"]
-z_index = 11
-offset_left = 72.0
-offset_top = 248.0
-offset_right = 129.0
-offset_bottom = 271.0
-text = "Lives: 3"
-script = ExtResource("3_ukfbq")
-
 [node name="ScoreManager" parent="." instance=ExtResource("2_6cvu2")]
-
-[node name="ScoreManagerDebug" type="VBoxContainer" parent="ScoreManager"]
-z_index = 11
-offset_left = 72.0
-offset_top = 160.0
-offset_right = 145.0
-offset_bottom = 210.0
-script = ExtResource("3_gnivt")
-
-[node name="ScoreLabel" type="Label" parent="ScoreManager/ScoreManagerDebug"]
-layout_mode = 2
-text = "Score: 0"
-
-[node name="ComboLabel" type="Label" parent="ScoreManager/ScoreManagerDebug"]
-layout_mode = 2
-text = "Combo: 0"
 
 [node name="Level" parent="." instance=ExtResource("2_jqutv")]
