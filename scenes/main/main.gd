@@ -14,3 +14,8 @@ func _ready():
 	level.stopped.connect(func():
 		level.play_intro()
 	)
+
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("reset_game"):
+		get_tree().reload_current_scene()
