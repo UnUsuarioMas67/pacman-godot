@@ -10,4 +10,4 @@ func _ready():
 			get_tree().reload_current_scene()
 	)
 	
-	level.begin()
+	level.play_intro()

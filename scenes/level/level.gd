@@ -1,6 +1,8 @@
 extends Node2D
 class_name Level
 
+signal intro_finished
+
 var total_pills: int = 0
 var pills_eaten: int = 0
 
@@ -17,7 +19,7 @@ func _ready():
 	GameEvents.player_death_started.connect(_on_player_death)
 
 
-func begin():
+func play_intro():
 	for actor in actors.get_children():
 		if "is_active" in actor:
 			actor.is_active = false
@@ -32,6 +34,7 @@ func begin():
 			actor.is_active = true
 	
 	get_tree().paused = false
+	intro_finished.emit()
 
 
 func _on_player_death():
