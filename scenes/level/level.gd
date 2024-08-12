@@ -68,7 +68,7 @@ func _on_pill_collected():
 		GameEvents.level_completed.emit()
 
 
-func _on_ghost_eaten():
+func _on_ghost_eaten(ghost: Ghost):
 	Utils.freeze_frame(0.5)
 	if !ghost_retreat_sound.playing:
 		ghost_retreat_sound.play()

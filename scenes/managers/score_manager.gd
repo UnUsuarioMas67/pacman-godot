@@ -28,7 +28,7 @@ func _on_big_pill_collected() -> void:
 	score_updated.emit(score)
 
 
-func _on_ghost_eaten() -> void:
+func _on_ghost_eaten(ghost: Ghost) -> void:
 	score += GHOST_COMBO_VALUES[ghost_combo]
 	ghost_combo = (ghost_combo + 1) % GHOST_COMBO_VALUES.size()
 	score_updated.emit(score)

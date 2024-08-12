@@ -114,7 +114,7 @@ func _set_is_active(value: bool):
 
 func die():
 	current_state = State.DEAD
-	GameEvents.ghost_eaten.emit()
+	GameEvents.ghost_eaten.emit(self)
 
 
 func reset():
