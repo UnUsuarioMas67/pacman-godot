@@ -49,8 +49,6 @@ func _ready():
 	_home_node = get_tree().get_first_node_in_group(home_position_group)
 	
 	current_state = initial_state
-	if current_state != State.HOME:
-		_choose_next_direction(self)
 	
 	# PRINT SCATTER NODE WARNING
 	assert(!!scatter_node, "[{0}] does not have a Scatter Node assigned".format([name]))
@@ -59,6 +57,9 @@ func _ready():
 func _physics_process(delta):
 	if !is_active:
 		return
+	
+	if current_state != State.HOME and _current_direction == Vector2.ZERO:
+		_choose_next_direction(self)
 	
 	if Utils.is_direction_free(self, _current_move_speed, _shape_query, _next_direction, delta):
 		_current_direction = _next_direction
