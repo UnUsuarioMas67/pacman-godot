@@ -1,0 +1,90 @@
+[gd_scene load_steps=5 format=3 uid="uid://owisq13qtfy6"]
+
+[ext_resource type="Texture2D" uid="uid://ci3me2r30yjg1" path="res://assets/sprites/maze/maze_tileset.png" id="1_qccms"]
+[ext_resource type="Texture2D" uid="uid://cqa30634423xt" path="res://assets/sprites/pac-man/pacman.png" id="2_jtn3v"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cwyas"]
+texture = ExtResource("1_qccms")
+texture_margin_left = 7.0
+texture_margin_top = 8.0
+texture_margin_right = 7.0
+texture_margin_bottom = 7.0
+region_rect = Rect2(0, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nujg8"]
+atlas = ExtResource("2_jtn3v")
+region = Rect2(16, 0, 16, 16)
+
+[node name="Hud" type="VBoxContainer"]
+z_index = 12
+offset_right = 112.0
+offset_bottom = 129.0
+theme_override_constants/separation = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxTexture_cwyas")
+
+[node name="Level" type="Label" parent="PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Level: 0"
+horizontal_alignment = 1
+
+[node name="PanelContainer2" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxTexture_cwyas")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer2"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Score" type="VBoxContainer" parent="PanelContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="PanelContainer2/VBoxContainer/Score"]
+layout_mode = 2
+text = "Score"
+horizontal_alignment = 1
+
+[node name="ScoreValue" type="Label" parent="PanelContainer2/VBoxContainer/Score"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0000000"
+horizontal_alignment = 1
+
+[node name="HighScore" type="VBoxContainer" parent="PanelContainer2/VBoxContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="PanelContainer2/VBoxContainer/HighScore"]
+layout_mode = 2
+text = "High Score"
+horizontal_alignment = 1
+
+[node name="HighScoreValue" type="Label" parent="PanelContainer2/VBoxContainer/HighScore"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0000000"
+horizontal_alignment = 1
+
+[node name="PanelContainer3" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxTexture_cwyas")
+
+[node name="Lives" type="HBoxContainer" parent="PanelContainer3"]
+layout_mode = 2
+
+[node name="Life" type="TextureRect" parent="PanelContainer3/Lives"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_nujg8")
+
+[node name="Life2" type="TextureRect" parent="PanelContainer3/Lives"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_nujg8")
+
+[node name="Life3" type="TextureRect" parent="PanelContainer3/Lives"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_nujg8")
