@@ -369,11 +369,9 @@ func _on_pill_collected():
 
 
 func _on_global_ghost_state_updated(global_state: Ghost.State, scared_mode: bool):
-	if current_state == State.DEAD or current_state == State.HOME:
-		_queue_state = global_state
-		return
-	
-	current_state = global_state if not scared_mode else State.SCARED
+	_queue_state = global_state
+	if current_state != State.DEAD and current_state != State.HOME:
+		current_state = global_state if not scared_mode else State.SCARED
 
 
 func _print_pathfinding_debug_info(available_directions: Array[Vector2], chosen_direction: Vector2):
