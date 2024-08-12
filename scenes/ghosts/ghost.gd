@@ -90,7 +90,7 @@ func _draw() -> void:
 	for dir in _draw_params["available_dir"]:
 		var from: Vector2 = to_local(_draw_params["pivot"].global_position)
 		var to: Vector2 = from + (16 * dir)
-		var color: Color = Color.MAGENTA if dir == _draw_params["chosen_dir"] else Color.GRAY
+		var color: Color = Color.GREEN if dir == _draw_params["chosen_dir"] else Color.RED
 		
 		draw_line(from, to, color)
 		draw_circle(to, 2, color)
