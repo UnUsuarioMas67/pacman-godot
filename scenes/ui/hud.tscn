@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://owisq13qtfy6"]
+[gd_scene load_steps=2 format=3 uid="uid://owisq13qtfy6"]
 
 [ext_resource type="Script" path="res://scenes/ui/hud.gd" id="1_d4m0e"]
-[ext_resource type="PackedScene" uid="uid://bu0qbetu0u4tu" path="res://scenes/ui/life.tscn" id="3_brulj"]
 
 [node name="Hud" type="VBoxContainer"]
 offset_right = 112.0
@@ -62,7 +61,4 @@ size_flags_vertical = 0
 [node name="LivesContainer" type="HBoxContainer" parent="PanelContainer3"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 16)
-layout_mode = 2
-
-[node name="Life" parent="PanelContainer3/LivesContainer" instance=ExtResource("3_brulj")]
 layout_mode = 2
