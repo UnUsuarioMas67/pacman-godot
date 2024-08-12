@@ -7,6 +7,7 @@
 [node name="Inky" instance=ExtResource("1_f1tkh")]
 script = ExtResource("2_xcqhd")
 initial_state = 3
+pills_required = 30
 home_position_group = "home_left"
 debug_color = "cyan"
 

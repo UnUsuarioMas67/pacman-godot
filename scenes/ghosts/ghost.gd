@@ -15,11 +15,12 @@ const DEAD_MOVE_SPEED := 120.0
 
 @export var initial_state: State
 @export var scatter_node: Node2D
+@export var pills_required := 0
 @export_enum("home_left", "home_center", "home_right") var home_position_group := "home_center" 
 @export_enum("red", "pink", "cyan", "orange") var debug_color := "red"
 
-var is_active := true : set = _set_is_active
 var can_move := true
+var is_active := true : set = _set_is_active
 var current_state: State : set = _set_state
 var queue_state: State
 var current_move_speed := NORMAL_MOVE_SPEED
@@ -35,12 +36,16 @@ var shape_query := PhysicsShapeQueryParameters2D.new()
 
 
 func _ready():
-	GameEvents.thirty_pills_collected.connect(_on_thirty_pills_collected)
+	GameEvents.pill_collected.connect(_on_pill_collected)
 	intersection_collider.area_entered.connect(_on_intersection_collider_area_entered)
 	
 	shape_query.shape = collision_shape.shape
 	
 	current_state = initial_state
+	
+	if current_state == State.HOME and pills_required == 0:
+		await _exit_home().finished
+		current_state = queue_state
 	
 	# PRINT SCATTER NODE WARNING
 	assert(!!scatter_node, "[{0}] does not have a Scatter Node assigned".format([name]))
@@ -291,8 +296,13 @@ func _on_intersection_collider_area_entered(area: Area2D):
 		await _exit_home().finished
 
 
-func _on_thirty_pills_collected():
-	if current_state == State.HOME:
+func _on_pill_collected():
+	if current_state != State.HOME:
+		return
+	
+	var level = owner as Level
+	
+	if level.pills_eaten == pills_required:
 		await _exit_home().finished
 		current_state = queue_state
 

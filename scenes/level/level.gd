@@ -1,4 +1,5 @@
-extends Node
+extends Node2D
+class_name Level
 
 var total_pills: int = 0
 var pills_eaten: int = 0
@@ -16,5 +17,3 @@ func _on_pill_collected():
 	
 	if pills_eaten == total_pills:
 		GameEvents.level_completed.emit()
-	elif pills_eaten == total_pills / 2:
-		GameEvents.half_pills_collected.emit()
