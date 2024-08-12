@@ -13,7 +13,7 @@ func _ready():
 		total_pills = get_tree().get_nodes_in_group("pill").size()
 	).call_deferred()
 	
-	GameEvents.player_died.connect(_on_player_died)
+	GameEvents.player_death_started.connect(_on_player_death)
 
 
 func begin():
@@ -32,12 +32,13 @@ func begin():
 	get_tree().paused = false
 
 
-func _on_player_died():
+func _on_player_death():
 	var ghosts = get_tree().get_nodes_in_group("ghost") as Array[Ghost]
 	for ghost in ghosts:
 		ghost.is_active = false
 	
-	await get_tree().create_timer(1.5).timeout
+	await GameEvents.player_death_finished
+	await get_tree().create_timer(1.0).timeout
 	get_tree().reload_current_scene()
 
 

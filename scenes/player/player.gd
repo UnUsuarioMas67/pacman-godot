@@ -14,12 +14,15 @@ var is_active := true : set = _set_is_active
 @onready var animated_sprite = $AnimatedSprite2D
 @onready var hurtbox = $Hurtbox
 @onready var hurtbox_shape = $Hurtbox/CollisionShape2D
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 
 func _ready():
 	hurtbox.area_entered.connect(_on_hurtbox_area_entered)
 	shape_query.collision_mask = collision_mask
 	shape_query.shape = collision_shape.shape
+	
+	animation_player.play("RESET")
 
 
 func _physics_process(delta):
@@ -39,11 +42,15 @@ func _physics_process(delta):
 
 func die():
 	is_dead = true
-	animated_sprite.play("death")
-	animated_sprite.rotation = 0
-	Callable(func (): hurtbox_shape.disabled = true).call_deferred()
-	
-	GameEvents.player_died.emit()
+	animation_player.play("death")
+
+
+func _emit_player_death_started():
+	GameEvents.player_death_started.emit()
+
+
+func _emit_player_death_finished():
+	GameEvents.player_death_finished.emit()
 
 
 func _set_is_active(value: bool):
@@ -62,9 +69,9 @@ func _handle_animation():
 	var result := get_world_2d().direct_space_state.intersect_ray(ray_query)
 	
 	if result.size() > 0 or current_direction == Vector2.ZERO:
-		animated_sprite.pause()
+		animation_player.pause()
 	else:
-		animated_sprite.play("default")
+		animation_player.play("move")
 	
 	if current_direction != Vector2.ZERO:
 		animated_sprite.rotation = current_direction.angle()
