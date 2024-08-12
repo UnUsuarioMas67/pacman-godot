@@ -44,6 +44,10 @@ func _initialize_level(new_level: Level):
 			new_level.play_intro()
 		else:
 			GameEvents.game_over.emit()
+			
+			GameOverScreen.display()
+			await GameOverScreen.ended
+			
 			get_tree().change_scene_to_file("res://scenes/title_screen/title_screen.tscn")
 	)
 	
