@@ -25,10 +25,9 @@ func reload_level() -> void:
 	remove_child(level)
 	level.queue_free()
 	
-	var new_level = LEVEL_SCENE.instantiate()
-	add_child(new_level)
-	
-	_initialize_level(new_level)
+	level = LEVEL_SCENE.instantiate()
+	add_child(level)
+	_initialize_level(level)
 
 
 func _initialize_level(new_level: Level):
