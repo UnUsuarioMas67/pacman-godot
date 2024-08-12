@@ -54,10 +54,7 @@ func _set_is_active(value: bool):
 
 
 func _handle_animation(delta):
-	if (
-			!Utils.is_direction_free(self, MOVE_SPEED, shape_query, current_direction, delta)
-			or current_direction == Vector2.ZERO
-	):
+	if is_on_wall() or current_direction == Vector2.ZERO:
 		animated_sprite.pause()
 	else:
 		animated_sprite.play("default")
