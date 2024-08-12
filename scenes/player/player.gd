@@ -31,7 +31,7 @@ func _physics_process(delta):
 	if Utils.is_direction_free(self, MOVE_SPEED, shape_query, next_direction, delta):
 		current_direction = next_direction
 	
-	_handle_animation(delta)
+	_handle_animation()
 	
 	velocity = MOVE_SPEED * current_direction
 	move_and_slide()
@@ -53,8 +53,15 @@ func _set_is_active(value: bool):
 	is_active = value
 
 
-func _handle_animation(delta):
-	if is_on_wall() or current_direction == Vector2.ZERO:
+func _handle_animation():
+	var ray_query := PhysicsRayQueryParameters2D.create(
+			global_position,
+			global_position + ((collision_shape.shape.size.x) * current_direction),
+			collision_mask
+	)
+	var result := get_world_2d().direct_space_state.intersect_ray(ray_query)
+	
+	if result.size() > 0 or current_direction == Vector2.ZERO:
 		animated_sprite.pause()
 	else:
 		animated_sprite.play("default")
