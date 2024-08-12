@@ -34,10 +34,23 @@ func _ready():
 	scare_timer.timeout.connect(_on_scare_timer_timeout)
 	
 	GameEvents.global_ghost_state_updated.connect(_print_debug_info)
-	GameEvents.player_death_started.connect(_on_player_death_started)
+	GameEvents.player_death_started.connect(_stop)
 	
-	var level: Level = owner as Level
-	level.intro_finished.connect(_on_level_intro_finished)
+	await get_tree().process_frame
+	Globals.current_level.intro_finished.connect(_start)
+
+
+func _start() -> void:
+	_play_siren()
+	state_timer.paused = false
+	state_timer.start(state_timer.time_left)
+	GameEvents.global_ghost_state_updated.emit(global_state, !scare_timer.is_stopped())
+
+
+func _stop() -> void:
+	_stop_siren()
+	state_timer.paused = true
+	scare_timer.stop()
 
 
 func _play_siren():
@@ -108,19 +121,6 @@ func _on_scare_timer_timeout():
 	state_timer.paused = false
 	_play_siren()
 	GameEvents.global_ghost_state_updated.emit(global_state, !scare_timer.is_stopped())
-
-
-func _on_level_intro_finished():
-	_play_siren()
-	state_timer.paused = false
-	state_timer.start(state_timer.time_left)
-	GameEvents.global_ghost_state_updated.emit(global_state, !scare_timer.is_stopped())
-
-
-func _on_player_death_started():
-	_stop_siren()
-	state_timer.paused = true
-	scare_timer.stop()
 
 
 func _print_debug_info(state: Ghost.State, scared_mode: bool):
