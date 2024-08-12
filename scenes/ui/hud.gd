@@ -7,11 +7,13 @@ const LIFE_SCENE: PackedScene = preload("res://scenes/ui/life.tscn")
 
 @onready var score_value: Label = %ScoreValue
 @onready var lives_container: HBoxContainer = %LivesContainer
+@onready var level: Label = %Level
 
 
 func _ready() -> void:
 	score_manager.score_updated.connect(_on_score_updated)
 	lives_manager.lives_updated.connect(_on_lives_updated)
+	GameEvents.level_changed.connect(_on_level_changed)
 	
 	await lives_manager.ready
 	for life in lives_container.get_children():
@@ -30,3 +32,7 @@ func _on_lives_updated(lives_left: int) -> void:
 	# loop through lives_container children in reverse order
 	for life in range(lives_container.get_child_count() - 1, lives_left - 1, -1):
 		lives_container.get_child(life).hide()
+
+
+func _on_level_changed(new_level: int) -> void:
+	level.text = "Level: " + str(new_level)
