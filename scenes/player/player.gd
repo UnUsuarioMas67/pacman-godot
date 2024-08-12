@@ -24,6 +24,7 @@ var _eat_sound1_played := false
 
 func _ready():
 	GameEvents.pill_collected.connect(_on_pill_collected)
+	GameEvents.big_pill_collected.connect(_on_pill_collected)
 	hurtbox.area_entered.connect(_on_hurtbox_area_entered)
 	shape_query.collision_mask = collision_mask
 	shape_query.shape = collision_shape.shape

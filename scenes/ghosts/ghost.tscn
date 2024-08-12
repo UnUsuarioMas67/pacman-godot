@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scenes/ghosts/ghost.gd" id="1_528wb"]
 [ext_resource type="PackedScene" uid="uid://qhetx041xrm2" path="res://scenes/warp/warp_component.tscn" id="2_5w6a5"]
 [ext_resource type="SpriteFrames" uid="uid://cumhwwmde070i" path="res://resources/ghosts/blinky_frames.tres" id="2_81ade"]
-[ext_resource type="AudioStream" path="res://assets/sfx/eat_ghost.wav" id="4_7skyn"]
+[ext_resource type="AudioStream" uid="uid://d3cjpfq7jowh1" path="res://assets/sfx/eat_ghost.wav" id="4_7skyn"]
 [ext_resource type="AudioStream" uid="uid://dau5r72pjb1ye" path="res://assets/sfx/retreating.wav" id="5_lf64k"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lrcld"]
