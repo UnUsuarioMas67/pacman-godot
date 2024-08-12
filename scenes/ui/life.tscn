@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://bu0qbetu0u4tu"]
+
+[ext_resource type="Texture2D" uid="uid://cqa30634423xt" path="res://assets/sprites/pac-man/pacman.png" id="1_lsh4a"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nujg8"]
+atlas = ExtResource("1_lsh4a")
+region = Rect2(16, 0, 16, 16)
+
+[node name="Life" type="TextureRect"]
+texture = SubResource("AtlasTexture_nujg8")
