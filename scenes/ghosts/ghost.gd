@@ -115,6 +115,7 @@ func _set_is_active(value: bool):
 
 func die():
 	current_state = State.DEAD
+	GameEvents.ghost_eaten.emit()
 
 
 func reset():
@@ -358,6 +359,7 @@ func _on_intersection_collider_area_entered(area: Area2D):
 		_choose_next_direction(area)
 	elif area.is_in_group("entrance") && current_state == State.DEAD:
 		await _enter_home().finished
+		GameEvents.ghost_reformed.emit()
 		current_state = _queue_state
 		await _exit_home().finished
 
