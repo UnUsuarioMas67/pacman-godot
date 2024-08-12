@@ -43,6 +43,6 @@ func _initialize_level(new_level: Level):
 		if lives_manager.lives > 0:
 			new_level.play_intro()
 		else:
-			get_tree().reload_current_scene()
+			get_tree().change_scene_to_file("res://scenes/title_screen/title_screen.tscn")
 	)
 	
