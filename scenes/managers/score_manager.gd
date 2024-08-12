@@ -30,8 +30,9 @@ func _on_big_pill_collected() -> void:
 
 func _on_ghost_eaten(ghost: Ghost) -> void:
 	score += GHOST_COMBO_VALUES[ghost_combo]
-	ghost_combo = (ghost_combo + 1) % GHOST_COMBO_VALUES.size()
 	score_updated.emit(score)
+	FloatingNumber.create(ghost, GHOST_COMBO_VALUES[ghost_combo])
+	ghost_combo = (ghost_combo + 1) % GHOST_COMBO_VALUES.size()
 
 
 func _on_global_ghost_state_updated(_global_state: Ghost.State, _scared_mode: bool) -> void:
