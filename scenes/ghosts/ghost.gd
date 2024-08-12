@@ -15,14 +15,15 @@ const DEAD_MOVE_SPEED := 120.0
 
 @export var initial_state: State
 @export var scatter_node: Node2D
-@export var home_node: Node2D
+@export_enum("home_left", "home_center", "home_right") var home_position_group := "home_center" 
 @export_enum("red", "pink", "cyan", "orange") var debug_color := "red"
 
 var is_active := true : set = _set_is_active
+var can_move := true
 var current_state: State : set = _set_state
 var queue_state: State
 var current_move_speed := NORMAL_MOVE_SPEED
-var current_direction := Vector2.ZERO
+var current_direction := Vector2.RIGHT
 var next_direction := Vector2.ZERO
 var target_position: Vector2
 var shape_query := PhysicsShapeQueryParameters2D.new()
@@ -40,7 +41,7 @@ func _ready():
 	shape_query.shape = collision_shape.shape
 	
 	current_state = initial_state
-
+	
 
 func _physics_process(delta):
 	if !is_active:
@@ -49,8 +50,9 @@ func _physics_process(delta):
 	if Utils.is_direction_free(self, current_move_speed, shape_query, next_direction, delta):
 		current_direction = next_direction
 	
-	velocity = current_move_speed * current_direction
-	move_and_slide()
+	if can_move:
+		velocity = current_move_speed * current_direction
+		move_and_slide()
 	_handle_animation()
 
 
@@ -85,7 +87,7 @@ func _set_state(new_state: State):
 		State.CHASE, State.SCATTER:
 			current_move_speed = NORMAL_MOVE_SPEED
 		State.HOME:
-			current_direction = Vector2.UP
+			_force_direction(Vector2.ZERO)
 		State.SCARED:
 			current_move_speed = SCARED_MOVE_SPEED
 		State.DEAD:
@@ -97,12 +99,16 @@ func _set_state(new_state: State):
 
 
 func _turn_around():
-	next_direction = current_direction * -1
-	current_direction = next_direction
+	_force_direction(current_direction * -1)
 	# TODO - explain these lines
 	var intersections = intersection_collider.get_overlapping_areas()
 	if intersections.size() > 0:
 		_on_intersection_collider_area_entered(intersections[0])
+
+
+func _force_direction(direction: Vector2):
+	next_direction = direction
+	current_direction = direction
 
 
 func _handle_animation():
@@ -121,6 +127,28 @@ func _handle_animation():
 		anim_suffix = "up"
 	
 	animated_sprite.play("{0}_{1}".format([anim_prefix, anim_suffix]))
+
+
+func _get_target_position() -> Vector2:
+	match current_state:
+		State.CHASE:
+			return _get_chase_target()
+		State.SCATTER:
+			return _get_scatter_target()
+		State.DEAD:
+			var entrance = get_tree().get_first_node_in_group("entrance") as Node2D
+			return entrance.global_position
+		_:
+			return Vector2.ZERO
+
+
+func _get_chase_target() -> Vector2:
+	var player: Node2D = get_tree().get_first_node_in_group("player")
+	return player.global_position
+
+
+func _get_scatter_target() -> Vector2:
+	return scatter_node.global_position
 
 
 func _get_available_directions(node) -> Array[Vector2]:
@@ -145,27 +173,6 @@ func _get_available_directions(node) -> Array[Vector2]:
 	return result if result.size() > 0 else [Vector2.ZERO]
 
 
-func _get_target_position() -> Vector2:
-	match current_state:
-		State.CHASE:
-			return _get_chase_target()
-		State.SCATTER:
-			return _get_scatter_target()
-		State.DEAD:
-			return home_node.global_position
-		_:
-			return Vector2.ZERO
-
-
-func _get_chase_target() -> Vector2:
-	var player: Node2D = get_tree().get_first_node_in_group("player")
-	return player.global_position
-
-
-func _get_scatter_target() -> Vector2:
-	return scatter_node.global_position
-
-
 func _get_best_direction(direction_list: Array[Vector2]) -> Vector2:
 	if direction_list.size() == 0:
 		return Vector2.ZERO
@@ -181,17 +188,10 @@ func _get_best_direction(direction_list: Array[Vector2]) -> Vector2:
 	return chosen_direction
 
 
-func _on_intersection_collider_area_entered(area: Area2D):
-	if current_state == State.HOME:
-		return
-	if current_state == State.DEAD and area == home_node:
-		current_state = queue_state
-		global_position = area.global_position
-		return
-	
+func _choose_next_direction(node: Area2D) -> void:
 	target_position = _get_target_position()
 	
-	var available_directions = _get_available_directions(area).filter(func(dir):
+	var available_directions = _get_available_directions(node).filter(func(dir):
 		# exclude the direction opposite to the current one
 		return dir != current_direction * -1
 	)
@@ -230,6 +230,54 @@ func _on_intersection_collider_area_entered(area: Area2D):
 		)
 		+ "[/color]"
 	)
+
+
+func _exit_home() -> void:
+	pass
+
+
+func _enter_home() -> void:
+	# 0. Disable regular movement
+	can_move = false
+	
+	# 1. Get the necessary nodes
+	var entrance = get_tree().get_first_node_in_group("entrance") as Node2D
+	var center = get_tree().get_first_node_in_group("home_center") as Node2D
+	var home_node = (
+			center if home_position_group == "home_center"
+			else get_tree().get_first_node_in_group(home_position_group) as Node2D
+	)
+	
+	# 2. Tween ghost position from entrance to the center of the home
+	var tween := create_tween()
+	
+	var entrance_to_center_duration: float = entrance.global_position.distance_to(center.global_position) / current_move_speed
+	tween.tween_property(self, "global_position", center.global_position, entrance_to_center_duration)\
+			.from(entrance.global_position)
+	tween.parallel().tween_callback(_force_direction.bind(Vector2.DOWN))
+	
+	# 3. Tween ghost position from center to it's home position
+	if home_node != center:
+		var center_to_home_duration: float = center.global_position.distance_to(home_node.global_position) / current_move_speed
+		tween.tween_property(self, "global_position", home_node.global_position, center_to_home_duration)\
+				.from(center.global_position)
+		var face_dir = Vector2.LEFT if home_position_group == "home_left" else Vector2.RIGHT
+		tween.parallel().tween_callback(_force_direction.bind(face_dir))
+	
+	
+	# 4. Change ghost state to HOME
+	tween.tween_property(self, "current_state", State.HOME, 0.0)
+	tween.parallel().tween_callback(_force_direction.bind(Vector2.DOWN))
+
+
+func _on_intersection_collider_area_entered(area: Area2D):
+	if current_state == State.HOME:
+		return
+	
+	if area.is_in_group("intersection_node"):
+		_choose_next_direction(area)
+	elif area.is_in_group("entrance") && current_state == State.DEAD:
+		_enter_home()
 
 
 func _on_thirty_pills_collected():

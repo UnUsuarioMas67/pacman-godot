@@ -4,9 +4,11 @@
 [ext_resource type="TileSet" uid="uid://cgitdssnis6gk" path="res://resources/maze.tres" id="1_sfp82"]
 [ext_resource type="PackedScene" uid="uid://wlsnalpplhnr" path="res://scenes/player/player.tscn" id="2_1xgre"]
 [ext_resource type="PackedScene" uid="uid://kcs6kemld525" path="res://scenes/managers/ghost_manager.tscn" id="2_68a4w"]
-[ext_resource type="PackedScene" uid="uid://ds52kywxn8fwu" path="res://scenes/ghosts/intersection_node.tscn" id="3_p045g"]
 [ext_resource type="PackedScene" uid="uid://bn4ntd2etxyom" path="res://scenes/ghosts/ghost.tscn" id="5_13lb8"]
 [ext_resource type="PackedScene" uid="uid://bhyrujaos8nfk" path="res://scenes/managers/pills_manager.tscn" id="8_bnc81"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3rjfs"]
+radius = 4.0
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_bsbh1")
@@ -45,19 +47,25 @@ position = Vector2(196, 156)
 [node name="Right" type="Marker2D" parent="Level/Maze/WarpPoints" groups=["warp_right"]]
 position = Vector2(444, 156)
 
-[node name="StartPoints" type="Node2D" parent="Level/Maze"]
+[node name="HomePoints" type="Node2D" parent="Level/Maze"]
 
-[node name="Top" parent="Level/Maze/StartPoints" instance=ExtResource("3_p045g")]
+[node name="Entrance" type="Area2D" parent="Level/Maze/HomePoints" groups=["entrance"]]
 position = Vector2(320, 132)
+collision_layer = 32
+collision_mask = 0
+monitoring = false
 
-[node name="Center" parent="Level/Maze/StartPoints" instance=ExtResource("3_p045g")]
-position = Vector2(320, 156)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/Maze/HomePoints/Entrance"]
+shape = SubResource("CircleShape2D_3rjfs")
 
-[node name="Left" parent="Level/Maze/StartPoints" instance=ExtResource("3_p045g")]
-position = Vector2(304, 156)
+[node name="Left" type="Marker2D" parent="Level/Maze/HomePoints" groups=["home_left"]]
+position = Vector2(304.105, 155.781)
 
-[node name="Right" parent="Level/Maze/StartPoints" instance=ExtResource("3_p045g")]
-position = Vector2(336, 156)
+[node name="Center" type="Marker2D" parent="Level/Maze/HomePoints" groups=["home_center"]]
+position = Vector2(320.105, 155.781)
+
+[node name="Right" type="Marker2D" parent="Level/Maze/HomePoints" groups=["home_right"]]
+position = Vector2(336.105, 155.781)
 
 [node name="ScatterPoints" type="Node2D" parent="Level/Maze"]
 
@@ -78,11 +86,11 @@ position = Vector2(440, 296)
 [node name="Player" parent="Level/Actors" instance=ExtResource("2_1xgre")]
 position = Vector2(320, 180)
 
-[node name="John" parent="Level/Actors" node_paths=PackedStringArray("scatter_node", "home_node") instance=ExtResource("5_13lb8")]
+[node name="John" parent="Level/Actors" node_paths=PackedStringArray("scatter_node") instance=ExtResource("5_13lb8")]
 position = Vector2(320, 132)
 initial_state = 1
 scatter_node = NodePath("../../Maze/ScatterPoints/BottomLeft")
-home_node = NodePath("../../Maze/StartPoints/Right")
+home_position_group = "home_right"
 debug_color = "orange"
 
 [node name="GhostManager" parent="Level" instance=ExtResource("2_68a4w")]
