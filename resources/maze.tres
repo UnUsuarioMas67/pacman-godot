@@ -1,13 +1,18 @@
-[gd_resource type="TileSet" load_steps=23 format=3 uid="uid://cgitdssnis6gk"]
+[gd_resource type="TileSet" load_steps=24 format=3 uid="uid://cgitdssnis6gk"]
 
 [ext_resource type="Texture2D" uid="uid://ci3me2r30yjg1" path="res://assets/sprites/maze/maze_tileset.png" id="1_8qm3p"]
 [ext_resource type="PackedScene" uid="uid://difsqh2skm85a" path="res://scenes/collectibles/pill.tscn" id="1_64vig"]
 [ext_resource type="PackedScene" uid="uid://bebv16fmw42ty" path="res://scenes/collectibles/big_pill.tscn" id="2_82x53"]
+[ext_resource type="PackedScene" uid="uid://ds52kywxn8fwu" path="res://scenes/ghosts/intersection_node.tscn" id="3_vks8r"]
 
 [sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_g8snt"]
 resource_name = "Pills"
 scenes/1/scene = ExtResource("1_64vig")
 scenes/2/scene = ExtResource("2_82x53")
+
+[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_md5sy"]
+resource_name = "Intersections"
+scenes/1/scene = ExtResource("3_vks8r")
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_021ev"]
 vertices = PackedVector2Array(1, -1, 4, -1, 4, 1, 1, 1, 1, 4, -1, 4, -1, 1, -1, -1, -4, 1, -4, -1, 1, -4, -1, -4)
@@ -111,13 +116,6 @@ agent_radius = 0.0
 vertices = PackedVector2Array(4, -1, 4, 1, 1, 1, -1, -1, -1, 4, 1, 4)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 3, 2, 5)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(-1, -1, 4, -1, 4, 1, 1, 1, 1, 4, -1, 4)])
-source_geometry_group_name = &"navigation_polygon_source_group"
-agent_radius = 0.0
-
-[sub_resource type="NavigationPolygon" id="NavigationPolygon_4xsll"]
-vertices = PackedVector2Array(4, 4, 3, 4, 3, -4, 4, -4)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(4, 4, 4, -4, 3, -4, 3, 4)])
 source_geometry_group_name = &"navigation_polygon_source_group"
 agent_radius = 0.0
 
@@ -432,7 +430,6 @@ texture_region_size = Vector2i(8, 8)
 2:7/0/physics_layer_1/linear_velocity = Vector2(0, 0)
 2:7/0/physics_layer_1/angular_velocity = 0.0
 2:7/0/physics_layer_1/polygon_0/points = PackedVector2Array(-4, 0, 4, 0, 4, 4, -4, 4)
-2:7/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_4xsll")
 2:7/1 = 1
 2:7/1/physics_layer_0/linear_velocity = Vector2(0, 0)
 2:7/1/physics_layer_0/angular_velocity = 0.0
@@ -454,3 +451,4 @@ physics_layer_1/collision_mask = 16
 navigation_layer_0/layers = 1
 sources/2 = SubResource("TileSetAtlasSource_yp6my")
 sources/0 = SubResource("TileSetScenesCollectionSource_g8snt")
+sources/1 = SubResource("TileSetScenesCollectionSource_md5sy")
