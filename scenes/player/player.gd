@@ -10,6 +10,7 @@ var shape_query := PhysicsShapeQueryParameters2D.new()
 var is_dead := false
 var is_active := true : set = _set_is_active
 var _eat_sound1_played := false
+var _start_position: Vector2
 
 @onready var collision_shape = $CollisionShape2D
 @onready var animated_sprite = $AnimatedSprite2D
@@ -29,7 +30,24 @@ func _ready():
 	shape_query.collision_mask = collision_mask
 	shape_query.shape = collision_shape.shape
 	
+	_start_position = global_position
+	
 	animation_player.play("RESET")
+
+
+func reset():
+	global_position = _start_position
+	
+	animated_sprite.play("default")
+	rotation = 0
+	Callable(func ():
+		hurtbox_shape.disabled = false
+	).call_deferred()
+	
+	_eat_sound1_played = false
+	is_dead = false
+	current_direction = Vector2.ZERO
+	next_direction = Vector2.ZERO
 
 
 func _physics_process(delta):
