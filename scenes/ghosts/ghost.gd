@@ -46,6 +46,7 @@ func _ready():
 	intersection_collider.area_entered.connect(_on_intersection_collider_area_entered)
 	
 	_shape_query.shape = collision_shape.shape
+	_shape_query.collision_mask = 0b10001
 	_home_node = get_tree().get_first_node_in_group(home_position_group)
 	
 	current_state = initial_state
@@ -192,11 +193,6 @@ func _get_scatter_target() -> Vector2:
 func _get_available_directions(node: Node2D) -> Array[Vector2]:
 	var directions: Array[Vector2] = [Vector2.UP, Vector2.LEFT, Vector2.DOWN, Vector2.RIGHT]
 	var result = directions.filter(func(dir):
-		# this line makes sure the query detects the ghost home gate only when checking the down direction and is not death
-		# so the ghost can move out of their home but not back in
-		# TODO - modify this behavior when handling the DEAD state
-		_shape_query.collision_mask = 0b10001
-		
 		return Utils.is_direction_free(
 				node, 
 				_current_move_speed, 
