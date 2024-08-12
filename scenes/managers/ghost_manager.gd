@@ -37,6 +37,8 @@ func _ready():
 	GameEvents.player_death_started.connect(_stop)
 	GameEvents.level_completed.connect(_stop)
 	
+	Globals.ghost_manager = self
+	
 	await get_tree().process_frame
 	Globals.current_level.intro_finished.connect(_start)
 
