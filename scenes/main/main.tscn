@@ -87,10 +87,10 @@ position = Vector2(440, 296)
 position = Vector2(320, 180)
 
 [node name="John" parent="Level/Actors" node_paths=PackedStringArray("scatter_node") instance=ExtResource("5_13lb8")]
-position = Vector2(320, 132)
-initial_state = 1
+position = Vector2(304, 156)
+initial_state = 3
 scatter_node = NodePath("../../Maze/ScatterPoints/BottomLeft")
-home_position_group = "home_right"
+home_position_group = "home_left"
 debug_color = "orange"
 
 [node name="GhostManager" parent="Level" instance=ExtResource("2_68a4w")]

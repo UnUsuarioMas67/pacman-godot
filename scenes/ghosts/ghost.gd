@@ -77,25 +77,27 @@ func _set_state(new_state: State):
 	if new_state == current_state:
 		return
 	
-	## exit previous state
-	#match current_state:
-		#State.DEAD:
-			#set_hurtbox_disabled(false)
-	
 	# enter new state
 	match new_state:
 		State.CHASE, State.SCATTER:
 			current_move_speed = NORMAL_MOVE_SPEED
 		State.HOME:
-			_force_direction(Vector2.ZERO)
+			_force_direction(Vector2.DOWN)
+			can_move = false
 		State.SCARED:
 			current_move_speed = SCARED_MOVE_SPEED
 		State.DEAD:
 			current_move_speed = DEAD_MOVE_SPEED
-			#set_hurtbox_disabled(true)
 	
+	var prev_state = current_state
 	current_state = new_state
+	
+	# prevents the ghost from turning around
+	if prev_state == State.HOME or new_state == State.HOME:
+		return
 	_turn_around()
+
+
 
 
 func _turn_around():
@@ -157,10 +159,8 @@ func _get_available_directions(node) -> Array[Vector2]:
 		# this line makes sure the query detects the ghost home gate only when checking the down direction and is not death
 		# so the ghost can move out of their home but not back in
 		# TODO - modify this behavior when handling the DEAD state
-		shape_query.collision_mask = (
-				0b10001 if dir == Vector2.DOWN and current_state != State.DEAD 
-				else 0b1
-		)
+		shape_query.collision_mask = 0b10001
+		
 		return Utils.is_direction_free(
 				node, 
 				current_move_speed, 
@@ -232,11 +232,41 @@ func _choose_next_direction(node: Area2D) -> void:
 	)
 
 
-func _exit_home() -> void:
-	pass
+func _exit_home() -> Tween:
+	# 0. Get nodes
+	var entrance = get_tree().get_first_node_in_group("entrance") as Node2D
+	var center = get_tree().get_first_node_in_group("home_center") as Node2D
+	var home_node = (
+			center if home_position_group == "home_center"
+			else get_tree().get_first_node_in_group(home_position_group) as Node2D
+	)
+	
+	# 1. Move to center
+	var tween := create_tween()
+	
+	if home_node != center:
+		var home_to_center_duration: float = center.global_position.distance_to(home_node.global_position) / current_move_speed
+		tween.tween_property(self, "global_position", center.global_position, home_to_center_duration)\
+				.from(home_node.global_position)
+		var face_dir = Vector2.RIGHT if home_position_group == "home_left" else Vector2.LEFT
+		tween.parallel().tween_callback(_force_direction.bind(face_dir))
+	
+	# 2. Move outside
+	var center_to_entrance_duration: float = entrance.global_position.distance_to(center.global_position) / current_move_speed
+	tween.tween_property(self, "global_position", entrance.global_position, center_to_entrance_duration)\
+			.from(center.global_position)
+	tween.parallel().tween_callback(_force_direction.bind(Vector2.UP))
+	
+	# 3. Choose move direction
+	tween.tween_callback(_choose_next_direction.bind(entrance))
+	
+	# 4. Re-enable movement
+	tween.tween_property(self, "can_move", true, 0)
+	
+	return tween
 
 
-func _enter_home() -> void:
+func _enter_home() -> Tween:
 	# 0. Disable regular movement
 	can_move = false
 	
@@ -248,15 +278,19 @@ func _enter_home() -> void:
 			else get_tree().get_first_node_in_group(home_position_group) as Node2D
 	)
 	
-	# 2. Tween ghost position from entrance to the center of the home
+	# 2. Tween ghost position to entrance
 	var tween := create_tween()
 	
+	var ghost_to_entrance_duration: float = global_position.distance_to(entrance.global_position) / current_move_speed
+	tween.tween_property(self, "global_position", entrance.global_position, ghost_to_entrance_duration)
+	
+	# 3. Move from entrance to center of home
 	var entrance_to_center_duration: float = entrance.global_position.distance_to(center.global_position) / current_move_speed
 	tween.tween_property(self, "global_position", center.global_position, entrance_to_center_duration)\
 			.from(entrance.global_position)
 	tween.parallel().tween_callback(_force_direction.bind(Vector2.DOWN))
 	
-	# 3. Tween ghost position from center to it's home position
+	# 4. Move from center to home position
 	if home_node != center:
 		var center_to_home_duration: float = center.global_position.distance_to(home_node.global_position) / current_move_speed
 		tween.tween_property(self, "global_position", home_node.global_position, center_to_home_duration)\
@@ -264,10 +298,7 @@ func _enter_home() -> void:
 		var face_dir = Vector2.LEFT if home_position_group == "home_left" else Vector2.RIGHT
 		tween.parallel().tween_callback(_force_direction.bind(face_dir))
 	
-	
-	# 4. Change ghost state to HOME
-	tween.tween_property(self, "current_state", State.HOME, 0.0)
-	tween.parallel().tween_callback(_force_direction.bind(Vector2.DOWN))
+	return tween
 
 
 func _on_intersection_collider_area_entered(area: Area2D):
@@ -277,10 +308,12 @@ func _on_intersection_collider_area_entered(area: Area2D):
 	if area.is_in_group("intersection_node"):
 		_choose_next_direction(area)
 	elif area.is_in_group("entrance") && current_state == State.DEAD:
-		_enter_home()
+		await _enter_home().finished
+		current_state = queue_state
+		await _exit_home().finished
 
 
 func _on_thirty_pills_collected():
 	if current_state == State.HOME:
+		await _exit_home().finished
 		current_state = queue_state
-		print('30 pills have been eaten. Leaving HOME')
