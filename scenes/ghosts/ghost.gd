@@ -95,23 +95,7 @@ func _draw() -> void:
 		draw_circle(to, 2, color)
 
 
-func _set_is_active(value: bool):
-	if value:
-		animated_sprite.play()
-	else:
-		animated_sprite.pause()
-	
-	is_active = value
-	
-	if !_home_tween or !_home_tween.is_valid():
-		return
-	
-	if value and !_home_tween.is_running() and !_home_tween.is_valid():
-		_home_tween.play()
-	elif !value and _home_tween.is_running():
-		_home_tween.pause()
-
-
+#region Public Methods
 func die():
 	current_state = State.DEAD
 	GameEvents.ghost_eaten.emit(self)
@@ -129,6 +113,24 @@ func reset():
 	if current_state != State.HOME:
 		var entrance: Node2D = get_tree().get_first_node_in_group("entrance") as Node2D
 		global_position = entrance.global_position
+#endregion
+
+#region Private Methods
+func _set_is_active(value: bool):
+	if value:
+		animated_sprite.play()
+	else:
+		animated_sprite.pause()
+	
+	is_active = value
+	
+	if !_home_tween or !_home_tween.is_valid():
+		return
+	
+	if value and !_home_tween.is_running() and !_home_tween.is_valid():
+		_home_tween.play()
+	elif !value and _home_tween.is_running():
+		_home_tween.pause()
 
 
 func _set_state(new_state: State):
@@ -213,8 +215,9 @@ func _handle_animation():
 		anim_suffix = "up"
 	
 	animated_sprite.play("{0}_{1}".format([anim_prefix, anim_suffix]))
+#endregion
 
-
+#region Pathfinding Methods
 func _get_target_position() -> Vector2:
 	match current_state:
 		State.CHASE:
@@ -283,8 +286,9 @@ func _choose_next_direction(node: Node2D) -> void:
 	# DEBUG INFORMATION
 	_draw_params["pivot"] = node
 	_print_pathfinding_debug_info(available_directions, _next_direction)
+#endregion
 
-
+#region Tween Animation Methods
 func _exit_home() -> Tween:
 	# 0. Get nodes
 	var entrance = get_tree().get_first_node_in_group("entrance") as Node2D
@@ -344,8 +348,9 @@ func _enter_home() -> Tween:
 		_home_tween.parallel().tween_callback(_force_direction.bind(face_dir))
 	
 	return _home_tween
+#endregion
 
-
+#region Signal Callables
 func _on_intersection_collider_area_entered(area: Area2D):
 	if current_state == State.HOME:
 		return
@@ -372,8 +377,9 @@ func _on_global_ghost_state_updated(global_state: Ghost.State, scared_mode: bool
 	_queue_state = global_state
 	if current_state != State.DEAD and current_state != State.HOME:
 		current_state = global_state if not scared_mode else State.SCARED
+#endregion
 
-
+#region Debug Methods
 func _print_pathfinding_debug_info(available_directions: Array[Vector2], chosen_direction: Vector2):
 	var directions_to_text = available_directions.map(func(dir):
 		if dir == Vector2.UP:
@@ -427,3 +433,4 @@ func _print_state_debug_info(new_state: State):
 		"[color={0}][{1}][/color] ".format([debug_color, name])
 		+ "Entering [color=magenta]{0}[/color] State".format([state_name]) 
 	)
+#endregion
