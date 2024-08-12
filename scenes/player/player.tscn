@@ -1,43 +1,13 @@
-[gd_scene load_steps=27 format=3 uid="uid://wlsnalpplhnr"]
+[gd_scene load_steps=31 format=3 uid="uid://wlsnalpplhnr"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_otve2"]
 [ext_resource type="Texture2D" uid="uid://cqa30634423xt" path="res://assets/sprites/pac-man/pacman.png" id="2_nad67"]
 [ext_resource type="Texture2D" uid="uid://baaf6lj3ft2yv" path="res://assets/sprites/pac-man/pacman_death.png" id="2_owuni"]
 [ext_resource type="PackedScene" uid="uid://qhetx041xrm2" path="res://scenes/warp/warp_component.tscn" id="2_ywlr8"]
-[ext_resource type="AudioStream" uid="uid://c8qt82duvh5r0" path="res://assets/sfx/munch_1.wav" id="5_lr3d8"]
-[ext_resource type="AudioStream" uid="uid://cqhvvg8pdf6kv" path="res://assets/sfx/munch_2.wav" id="6_tqeod"]
-[ext_resource type="AudioStream" uid="uid://uvwwcudymt13" path="res://assets/sfx/death_1.wav" id="7_xgd71"]
-[ext_resource type="AudioStream" uid="uid://d11imh7tmdjed" path="res://assets/sfx/death_2.wav" id="8_csu2h"]
-
-[sub_resource type="Animation" id="Animation_uccqc"]
-resource_name = "move"
-length = 0.250008
-loop_mode = 1
-step = 0.0833333
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedSprite2D:animation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"default"]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("AnimatedSprite2D:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.0833333, 0.166667),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 1,
-"values": [0, 1, 2]
-}
+[ext_resource type="AudioStream" path="res://assets/sfx/munch_1.wav" id="5_lr3d8"]
+[ext_resource type="AudioStream" path="res://assets/sfx/munch_2.wav" id="6_tqeod"]
+[ext_resource type="AudioStream" path="res://assets/sfx/death_1.wav" id="7_xgd71"]
+[ext_resource type="AudioStream" path="res://assets/sfx/death_2.wav" id="8_csu2h"]
 
 [sub_resource type="Animation" id="Animation_wr1du"]
 length = 0.001
@@ -92,7 +62,8 @@ tracks/3/keys = {
 
 [sub_resource type="Animation" id="Animation_umfk7"]
 resource_name = "death"
-length = 1.70001
+length = 2.00001
+step = 0.0666667
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -112,10 +83,10 @@ tracks/1/path = NodePath("AnimatedSprite2D:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.6, 0.733333, 0.866667, 1, 1.13333, 1.26667, 1.4, 1.53333, 1.66667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+"values": [0, 1, 2, 3, 4, 5, 6, 9, 10, 11]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -148,7 +119,7 @@ tracks/4/path = NodePath(".")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0, 1.7),
+"times": PackedFloat32Array(0, 2),
 "transitions": PackedFloat32Array(1, 1),
 "values": [{
 "args": [],
@@ -157,6 +128,59 @@ tracks/4/keys = {
 "args": [],
 "method": &"_emit_player_death_finished"
 }]
+}
+tracks/5/type = "audio"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Sounds/DeathSound1")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"clips": [{
+"end_offset": 1.7892,
+"start_offset": 0.0,
+"stream": ExtResource("7_xgd71")
+}, {
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("8_csu2h")
+}, {
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("8_csu2h")
+}],
+"times": PackedFloat32Array(0.6, 1.6, 1.8)
+}
+tracks/5/use_blend = true
+
+[sub_resource type="Animation" id="Animation_uccqc"]
+resource_name = "move"
+length = 0.250008
+loop_mode = 1
+step = 0.0833333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"default"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.0833333, 0.166667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 1, 2]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_jh817"]
@@ -330,7 +354,5 @@ stream = ExtResource("5_lr3d8")
 stream = ExtResource("6_tqeod")
 
 [node name="DeathSound1" type="AudioStreamPlayer" parent="Sounds"]
-stream = ExtResource("7_xgd71")
 
 [node name="DeathSound2" type="AudioStreamPlayer" parent="Sounds"]
-stream = ExtResource("8_csu2h")
