@@ -33,6 +33,8 @@ var shape_query := PhysicsShapeQueryParameters2D.new()
 @onready var animated_sprite = $AnimatedSprite2D
 @onready var intersection_collider: Area2D = $IntersectionCollider
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
+@onready var eaten_sound: AudioStreamPlayer = $Sounds/EatenSound
+@onready var retreat_sound: AudioStreamPlayer = $Sounds/RetreatSound
 
 
 func _ready():
@@ -97,6 +99,10 @@ func _set_state(new_state: State):
 			current_move_speed = SCARED_MOVE_SPEED
 		State.DEAD:
 			current_move_speed = DEAD_MOVE_SPEED
+			_play_death_sound()
+	
+	if new_state != State.DEAD:
+		retreat_sound.stop()
 	
 	var prev_state = current_state
 	current_state = new_state
@@ -109,6 +115,10 @@ func _set_state(new_state: State):
 	_turn_around()
 
 
+func _play_death_sound():
+	eaten_sound.play()
+	await eaten_sound.finished
+	retreat_sound.play()
 
 
 func _turn_around():
