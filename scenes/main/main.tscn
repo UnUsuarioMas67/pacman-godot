@@ -1,12 +1,29 @@
-[gd_scene load_steps=4 format=3 uid="uid://dt74l2dd8283d"]
+[gd_scene load_steps=5 format=3 uid="uid://dt74l2dd8283d"]
 
 [ext_resource type="Script" path="res://scenes/main/main.gd" id="1_bsbh1"]
 [ext_resource type="PackedScene" uid="uid://bj8js38uy8iiw" path="res://scenes/managers/score_manager.tscn" id="2_6cvu2"]
 [ext_resource type="PackedScene" uid="uid://dluj0yt5jbyjb" path="res://scenes/level/level.tscn" id="2_jqutv"]
+[ext_resource type="Script" path="res://scenes/main/ScoreManagerDebug.gd" id="3_gnivt"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_bsbh1")
 
 [node name="ScoreManager" parent="." instance=ExtResource("2_6cvu2")]
+
+[node name="ScoreManagerDebug" type="VBoxContainer" parent="ScoreManager"]
+z_index = 11
+offset_left = 72.0
+offset_top = 160.0
+offset_right = 145.0
+offset_bottom = 210.0
+script = ExtResource("3_gnivt")
+
+[node name="ScoreLabel" type="Label" parent="ScoreManager/ScoreManagerDebug"]
+layout_mode = 2
+text = "Score: 0"
+
+[node name="ComboLabel" type="Label" parent="ScoreManager/ScoreManagerDebug"]
+layout_mode = 2
+text = "Combo: 0"
 
 [node name="Level" parent="." instance=ExtResource("2_jqutv")]
