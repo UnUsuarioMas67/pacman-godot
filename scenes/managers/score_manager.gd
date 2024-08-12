@@ -1,7 +1,7 @@
 extends Node
 class_name ScoreManager
  
-signal score_updated(new_score: int)
+signal score_updated(new_score: int, amount_gained: int)
 
 const PILL_VALUE: int = 10
 const BIG_PILL_VALUE: int = 50
@@ -20,18 +20,18 @@ func _ready() -> void:
 
 func _on_pill_collected() -> void:
 	score += PILL_VALUE
-	score_updated.emit(score)
+	score_updated.emit(score, PILL_VALUE)
 
 
 func _on_big_pill_collected() -> void:
 	score += BIG_PILL_VALUE
-	score_updated.emit(score)
+	score_updated.emit(score, BIG_PILL_VALUE)
 
 
 func _on_ghost_eaten() -> void:
 	score += GHOST_COMBO_VALUES[ghost_combo]
 	ghost_combo = (ghost_combo + 1) % GHOST_COMBO_VALUES.size()
-	score_updated.emit(score)
+	score_updated.emit(score, GHOST_COMBO_VALUES[ghost_combo])
 
 
 func _on_global_ghost_state_updated(_global_state: Ghost.State, _scared_mode: bool) -> void:

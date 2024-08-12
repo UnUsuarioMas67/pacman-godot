@@ -24,7 +24,7 @@ func _ready() -> void:
 		lives_container.add_child(life_instance)
 
 
-func _on_score_updated(new_score: int) -> void:
+func _on_score_updated(new_score: int, score_gained: int) -> void:
 	score_value.text = "%07d" % new_score
 
 
