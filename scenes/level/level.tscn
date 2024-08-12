@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dluj0yt5jbyjb"]
+[gd_scene load_steps=11 format=3 uid="uid://dluj0yt5jbyjb"]
 
 [ext_resource type="Script" path="res://scenes/level/level.gd" id="1_6vwv8"]
 [ext_resource type="TileSet" uid="uid://cgitdssnis6gk" path="res://resources/maze.tres" id="1_fw2l1"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://blm40iaro44uy" path="res://scenes/ghosts/pinky/pinky.tscn" id="7_k4kf8"]
 [ext_resource type="PackedScene" uid="uid://80skguk1srk7" path="res://scenes/ghosts/clyde/clyde.tscn" id="8_16a5i"]
 [ext_resource type="PackedScene" uid="uid://db28xqgbt23md" path="res://scenes/ghosts/inky/inky.tscn" id="9_fc8ss"]
+[ext_resource type="AudioStream" uid="uid://b6016p7ki172m" path="res://assets/sfx/game_start.wav" id="9_s1aob"]
 [ext_resource type="PackedScene" uid="uid://kcs6kemld525" path="res://scenes/managers/ghost_manager.tscn" id="10_7ag1a"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3rjfs"]
@@ -104,3 +105,9 @@ scatter_node = NodePath("../../Maze/ScatterPoints/BottomLeft")
 [node name="Inky" parent="Actors" node_paths=PackedStringArray("scatter_node") instance=ExtResource("9_fc8ss")]
 position = Vector2(304, 156)
 scatter_node = NodePath("../../Maze/ScatterPoints/BottomRight")
+
+[node name="Sounds" type="Node" parent="."]
+process_mode = 3
+
+[node name="IntroSound" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("9_s1aob")

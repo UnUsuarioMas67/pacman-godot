@@ -9,6 +9,7 @@ var next_direction := Vector2.ZERO
 var shape_query := PhysicsShapeQueryParameters2D.new()
 var is_dead := false
 var is_active := true : set = _set_is_active
+var _eat_sound1_played := false
 
 @onready var collision_shape = $CollisionShape2D
 @onready var animated_sprite = $AnimatedSprite2D
@@ -16,8 +17,13 @@ var is_active := true : set = _set_is_active
 @onready var hurtbox_shape = $Hurtbox/CollisionShape2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
+# SFX
+@onready var eat_sound1: AudioStreamPlayer = $Sounds/EatSound1
+@onready var eat_sound2: AudioStreamPlayer = $Sounds/EatSound2
+
 
 func _ready():
+	GameEvents.pill_collected.connect(_on_pill_collected)
 	hurtbox.area_entered.connect(_on_hurtbox_area_entered)
 	shape_query.collision_mask = collision_mask
 	shape_query.shape = collision_shape.shape
@@ -99,3 +105,13 @@ func _on_hurtbox_area_entered(area: Area2D):
 		return
 	
 	die()
+
+
+func _on_pill_collected():
+	if not _eat_sound1_played:
+		eat_sound1.play()
+		_eat_sound1_played = true
+		return
+	else:
+		eat_sound2.play()
+		_eat_sound1_played = false

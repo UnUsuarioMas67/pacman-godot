@@ -5,6 +5,7 @@ var total_pills: int = 0
 var pills_eaten: int = 0
 
 @onready var actors: Node2D = $Actors
+@onready var intro_sound: AudioStreamPlayer = $Sounds/IntroSound
 
 
 func _ready():
@@ -23,7 +24,8 @@ func begin():
 	
 	get_tree().paused = true
 	
-	await get_tree().create_timer(3.0).timeout
+	intro_sound.play()
+	await intro_sound.finished
 	
 	for actor in actors.get_children():
 		if "is_active" in actor:

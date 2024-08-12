@@ -4,6 +4,10 @@
 [ext_resource type="Texture2D" uid="uid://cqa30634423xt" path="res://assets/sprites/pac-man/pacman.png" id="2_nad67"]
 [ext_resource type="Texture2D" uid="uid://baaf6lj3ft2yv" path="res://assets/sprites/pac-man/pacman_death.png" id="2_owuni"]
 [ext_resource type="PackedScene" uid="uid://qhetx041xrm2" path="res://scenes/warp/warp_component.tscn" id="2_ywlr8"]
+[ext_resource type="AudioStream" uid="uid://c8qt82duvh5r0" path="res://assets/sfx/munch_1.wav" id="5_lr3d8"]
+[ext_resource type="AudioStream" uid="uid://cqhvvg8pdf6kv" path="res://assets/sfx/munch_2.wav" id="6_tqeod"]
+[ext_resource type="AudioStream" uid="uid://uvwwcudymt13" path="res://assets/sfx/death_1.wav" id="7_xgd71"]
+[ext_resource type="AudioStream" uid="uid://d11imh7tmdjed" path="res://assets/sfx/death_2.wav" id="8_csu2h"]
 
 [sub_resource type="Animation" id="Animation_uccqc"]
 resource_name = "move"
@@ -316,3 +320,17 @@ collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
 shape = SubResource("CircleShape2D_bmefn")
+
+[node name="Sounds" type="Node" parent="."]
+
+[node name="EatSound1" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("5_lr3d8")
+
+[node name="EatSound2" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("6_tqeod")
+
+[node name="DeathSound1" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("7_xgd71")
+
+[node name="DeathSound2" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("8_csu2h")
