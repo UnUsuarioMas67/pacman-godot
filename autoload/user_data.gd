@@ -1,5 +1,7 @@
 extends Node
 
+signal high_score_updated
+
 const SAVE_FILE_PATH := "user://data.save"
 
 var save_data := {
@@ -29,3 +31,4 @@ func submit_score(score: int):
 	if score > current_high_score:
 		save_data["high_score"] = score
 		save_file()
+		high_score_updated.emit()
