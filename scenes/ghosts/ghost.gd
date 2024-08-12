@@ -92,9 +92,9 @@ func _draw() -> void:
 
 func _set_is_active(value: bool):
 	if value:
-		show()
+		animated_sprite.pause()
 	else:
-		hide()
+		animated_sprite.play()
 	
 	is_active = value
 
@@ -187,13 +187,13 @@ func _handle_animation():
 		return
 	
 	var anim_prefix = "move" if current_state != State.DEAD else "dead"
-	var anim_suffix = "left"
+	var anim_suffix = "down"
 	
-	if round(_current_direction.y) == 1:
-		anim_suffix = "down"
-	elif round(_current_direction.x) == 1:
+	if _current_direction.x == -1:
+		anim_suffix = "left"
+	elif _current_direction.x == 1:
 		anim_suffix = "right"
-	elif round(_current_direction.y) == -1:
+	elif _current_direction.y == -1:
 		anim_suffix = "up"
 	
 	animated_sprite.play("{0}_{1}".format([anim_prefix, anim_suffix]))
