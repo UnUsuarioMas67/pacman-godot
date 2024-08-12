@@ -4,12 +4,41 @@ class_name Level
 var total_pills: int = 0
 var pills_eaten: int = 0
 
+@onready var actors: Node2D = $Actors
+
 
 func _ready():
 	GameEvents.pill_collected.connect(_on_pill_collected)
 	Callable(func ():
 		total_pills = get_tree().get_nodes_in_group("pill").size()
 	).call_deferred()
+	
+	GameEvents.player_died.connect(_on_player_died)
+
+
+func begin():
+	for actor in actors.get_children():
+		if "is_active" in actor:
+			actor.is_active = false
+	
+	get_tree().paused = true
+	
+	await get_tree().create_timer(3.0).timeout
+	
+	for actor in actors.get_children():
+		if "is_active" in actor:
+			actor.is_active = true
+	
+	get_tree().paused = false
+
+
+func _on_player_died():
+	var ghosts = get_tree().get_nodes_in_group("ghost") as Array[Ghost]
+	for ghost in ghosts:
+		ghost.is_active = false
+	
+	await get_tree().create_timer(1.5).timeout
+	get_tree().reload_current_scene()
 
 
 func _on_pill_collected():
