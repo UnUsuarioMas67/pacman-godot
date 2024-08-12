@@ -137,8 +137,6 @@ func _set_state(new_state: State):
 	
 	# enter new state
 	match new_state:
-		State.CHASE, State.SCATTER:
-			_current_move_speed = NORMAL_MOVE_SPEED
 		State.HOME:
 			if _home_node:
 				global_position = _home_node.global_position
@@ -151,6 +149,8 @@ func _set_state(new_state: State):
 			_current_move_speed = DEAD_MOVE_SPEED
 			_play_death_sound()
 	
+	if new_state != State.SCARED and new_state != State.DEAD:
+		_current_move_speed = NORMAL_MOVE_SPEED
 	if new_state != State.DEAD:
 		retreat_sound.stop()
 	
