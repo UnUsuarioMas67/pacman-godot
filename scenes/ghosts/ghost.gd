@@ -47,10 +47,6 @@ func _ready():
 	
 	current_state = initial_state
 	
-	if current_state == State.HOME and pills_required == 0:
-		await _exit_home().finished
-		current_state = _queue_state
-	
 	# PRINT SCATTER NODE WARNING
 	assert(!!scatter_node, "[{0}] does not have a Scatter Node assigned".format([name]))
 	
@@ -96,6 +92,7 @@ func _set_state(new_state: State):
 		State.HOME:
 			_force_direction(Vector2.DOWN)
 			_can_move = false
+			Callable(_try_leaving_home).call_deferred()
 		State.SCARED:
 			_current_move_speed = SCARED_MOVE_SPEED
 		State.DEAD:
@@ -116,7 +113,16 @@ func _set_state(new_state: State):
 	_turn_around()
 
 
-func _play_death_sound():
+func _try_leaving_home() -> void:
+	if current_state != State.HOME:
+		return
+	
+	if Globals.current_level.pills_eaten >= pills_required:
+		await _exit_home().finished
+		current_state = _queue_state
+
+
+func _play_death_sound() -> void:
 	eaten_sound.play()
 	await eaten_sound.finished
 	retreat_sound.play()
@@ -312,9 +318,7 @@ func _on_pill_collected():
 	if current_state != State.HOME:
 		return
 	
-	var level = owner as Level
-	
-	if level.pills_eaten == pills_required:
+	if Globals.current_level.pills_eaten == pills_required:
 		await _exit_home().finished
 		current_state = _queue_state
 
