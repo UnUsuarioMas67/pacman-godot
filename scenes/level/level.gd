@@ -61,6 +61,10 @@ func _on_pill_collected():
 	pills_eaten += 1
 	
 	if pills_eaten == total_pills:
+		for actor in actors.get_children():
+			if "is_active" in actor:
+				actor.is_active = false
+		
 		GameEvents.level_completed.emit()
 
 
