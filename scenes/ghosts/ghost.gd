@@ -122,10 +122,6 @@ func reset():
 		global_position = entrance.global_position
 
 
-func set_hurtbox_disabled(is_disabled: bool) -> void:
-	Callable(func (): hurtbox_collision.disabled = is_disabled).call_deferred()
-
-
 func _set_state(new_state: State):
 	if new_state == current_state:
 		return
