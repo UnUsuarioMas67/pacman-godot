@@ -132,7 +132,10 @@ func reset():
 
 
 func _set_state(new_state: State):
-	if new_state == current_state:
+	# prevents same state transitions
+	# unless transitioning to HOME state because otherwise the Ghost will 
+	# become unable to move if reset while on it's exit animation
+	if new_state == current_state and current_state != State.HOME:
 		return
 	
 	# enter new state
