@@ -42,6 +42,9 @@ func _ready():
 	
 	current_state = initial_state
 	
+	# PRINT SCATTER NODE WARNING
+	assert(!!scatter_node, "[{0}] does not have a Scatter Node assigned".format([name]))
+	
 
 func _physics_process(delta):
 	if !is_active:
