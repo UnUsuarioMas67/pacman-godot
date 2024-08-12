@@ -19,15 +19,16 @@ const DEAD_MOVE_SPEED := 120.0
 @export_enum("home_left", "home_center", "home_right") var home_position_group := "home_center" 
 @export_enum("red", "pink", "cyan", "orange") var debug_color := "red"
 
-var can_move := true
-var is_active := true : set = _set_is_active
 var current_state: State : set = _set_state
-var queue_state: State
-var current_move_speed := NORMAL_MOVE_SPEED
-var current_direction := Vector2.LEFT
-var next_direction := Vector2.ZERO
-var target_position: Vector2
-var shape_query := PhysicsShapeQueryParameters2D.new()
+var is_active := true : set = _set_is_active
+
+var _queue_state: State
+var _current_move_speed := NORMAL_MOVE_SPEED
+var _current_direction := Vector2.LEFT
+var _next_direction := Vector2.ZERO
+var _target_position: Vector2
+var _shape_query := PhysicsShapeQueryParameters2D.new()
+var _can_move := true
 
 @onready var hurtbox_collision = $Hurtbox/CollisionShape2D
 @onready var animated_sprite = $AnimatedSprite2D
@@ -42,13 +43,13 @@ func _ready():
 	GameEvents.global_ghost_state_updated.connect(_on_global_ghost_state_updated)
 	intersection_collider.area_entered.connect(_on_intersection_collider_area_entered)
 	
-	shape_query.shape = collision_shape.shape
+	_shape_query.shape = collision_shape.shape
 	
 	current_state = initial_state
 	
 	if current_state == State.HOME and pills_required == 0:
 		await _exit_home().finished
-		current_state = queue_state
+		current_state = _queue_state
 	
 	# PRINT SCATTER NODE WARNING
 	assert(!!scatter_node, "[{0}] does not have a Scatter Node assigned".format([name]))
@@ -58,11 +59,11 @@ func _physics_process(delta):
 	if !is_active:
 		return
 	
-	if Utils.is_direction_free(self, current_move_speed, shape_query, next_direction, delta):
-		current_direction = next_direction
+	if Utils.is_direction_free(self, _current_move_speed, _shape_query, _next_direction, delta):
+		_current_direction = _next_direction
 	
-	if can_move:
-		velocity = current_move_speed * current_direction
+	if _can_move:
+		velocity = _current_move_speed * _current_direction
 		move_and_slide()
 	_handle_animation()
 
@@ -91,14 +92,14 @@ func _set_state(new_state: State):
 	# enter new state
 	match new_state:
 		State.CHASE, State.SCATTER:
-			current_move_speed = NORMAL_MOVE_SPEED
+			_current_move_speed = NORMAL_MOVE_SPEED
 		State.HOME:
 			_force_direction(Vector2.DOWN)
-			can_move = false
+			_can_move = false
 		State.SCARED:
-			current_move_speed = SCARED_MOVE_SPEED
+			_current_move_speed = SCARED_MOVE_SPEED
 		State.DEAD:
-			current_move_speed = DEAD_MOVE_SPEED
+			_current_move_speed = DEAD_MOVE_SPEED
 			_play_death_sound()
 	
 	if new_state != State.DEAD:
@@ -122,7 +123,7 @@ func _play_death_sound():
 
 
 func _turn_around():
-	_force_direction(current_direction * -1)
+	_force_direction(_current_direction * -1)
 	# TODO - explain these lines
 	var intersections = intersection_collider.get_overlapping_areas()
 	if intersections.size() > 0:
@@ -130,8 +131,8 @@ func _turn_around():
 
 
 func _force_direction(direction: Vector2):
-	next_direction = direction
-	current_direction = direction
+	_next_direction = direction
+	_current_direction = direction
 
 
 func _handle_animation():
@@ -142,11 +143,11 @@ func _handle_animation():
 	var anim_prefix = "move" if current_state != State.DEAD else "dead"
 	var anim_suffix = "left"
 	
-	if round(current_direction.y) == 1:
+	if round(_current_direction.y) == 1:
 		anim_suffix = "down"
-	elif round(current_direction.x) == 1:
+	elif round(_current_direction.x) == 1:
 		anim_suffix = "right"
-	elif round(current_direction.y) == -1:
+	elif round(_current_direction.y) == -1:
 		anim_suffix = "up"
 	
 	animated_sprite.play("{0}_{1}".format([anim_prefix, anim_suffix]))
@@ -180,12 +181,12 @@ func _get_available_directions(node) -> Array[Vector2]:
 		# this line makes sure the query detects the ghost home gate only when checking the down direction and is not death
 		# so the ghost can move out of their home but not back in
 		# TODO - modify this behavior when handling the DEAD state
-		shape_query.collision_mask = 0b10001
+		_shape_query.collision_mask = 0b10001
 		
 		return Utils.is_direction_free(
 				node, 
-				current_move_speed, 
-				shape_query, 
+				_current_move_speed, 
+				_shape_query, 
 				dir, 
 				get_physics_process_delta_time()
 		)
@@ -200,8 +201,8 @@ func _get_best_direction(direction_list: Array[Vector2]) -> Vector2:
 	
 	var chosen_direction: Vector2 = direction_list[0]
 	for dir in direction_list:
-		var distance_from_current = (global_position + dir).distance_squared_to(target_position)
-		var distance_from_chosen = (global_position + chosen_direction).distance_squared_to(target_position)
+		var distance_from_current = (global_position + dir).distance_squared_to(_target_position)
+		var distance_from_chosen = (global_position + chosen_direction).distance_squared_to(_target_position)
 		
 		if distance_from_current < distance_from_chosen or chosen_direction == Vector2.ZERO:
 			chosen_direction = dir
@@ -210,20 +211,20 @@ func _get_best_direction(direction_list: Array[Vector2]) -> Vector2:
 
 
 func _choose_next_direction(node: Area2D) -> void:
-	target_position = _get_target_position()
+	_target_position = _get_target_position()
 	
 	var available_directions = _get_available_directions(node).filter(func(dir):
 		# exclude the direction opposite to the current one
-		return dir != current_direction * -1
+		return dir != _current_direction * -1
 	)
 	
-	next_direction = (
+	_next_direction = (
 			_get_best_direction(available_directions) if current_state != State.SCARED
 			else available_directions.pick_random()
 	)
 	
 	# DEBUG INFORMATION
-	_print_pathfinding_debug_info(available_directions, next_direction)
+	_print_pathfinding_debug_info(available_directions, _next_direction)
 
 
 func _exit_home() -> Tween:
@@ -239,14 +240,14 @@ func _exit_home() -> Tween:
 	var tween := create_tween()
 	
 	if home_node != center:
-		var home_to_center_duration: float = center.global_position.distance_to(home_node.global_position) / current_move_speed
+		var home_to_center_duration: float = center.global_position.distance_to(home_node.global_position) / _current_move_speed
 		tween.tween_property(self, "global_position", center.global_position, home_to_center_duration)\
 				.from(home_node.global_position)
 		var face_dir = Vector2.RIGHT if home_position_group == "home_left" else Vector2.LEFT
 		tween.parallel().tween_callback(_force_direction.bind(face_dir))
 	
 	# 2. Move outside
-	var center_to_entrance_duration: float = entrance.global_position.distance_to(center.global_position) / current_move_speed
+	var center_to_entrance_duration: float = entrance.global_position.distance_to(center.global_position) / _current_move_speed
 	tween.tween_property(self, "global_position", entrance.global_position, center_to_entrance_duration)\
 			.from(center.global_position)
 	tween.parallel().tween_callback(_force_direction.bind(Vector2.UP))
@@ -255,14 +256,14 @@ func _exit_home() -> Tween:
 	tween.tween_callback(_choose_next_direction.bind(entrance))
 	
 	# 4. Re-enable movement
-	tween.tween_property(self, "can_move", true, 0)
+	tween.tween_property(self, "_can_move", true, 0)
 	
 	return tween
 
 
 func _enter_home() -> Tween:
 	# 0. Disable regular movement
-	can_move = false
+	_can_move = false
 	
 	# 1. Get the necessary nodes
 	var entrance = get_tree().get_first_node_in_group("entrance") as Node2D
@@ -275,18 +276,18 @@ func _enter_home() -> Tween:
 	# 2. Tween ghost position to entrance
 	var tween := create_tween()
 	
-	var ghost_to_entrance_duration: float = global_position.distance_to(entrance.global_position) / current_move_speed
+	var ghost_to_entrance_duration: float = global_position.distance_to(entrance.global_position) / _current_move_speed
 	tween.tween_property(self, "global_position", entrance.global_position, ghost_to_entrance_duration)
 	
 	# 3. Move from entrance to center of home
-	var entrance_to_center_duration: float = entrance.global_position.distance_to(center.global_position) / current_move_speed
+	var entrance_to_center_duration: float = entrance.global_position.distance_to(center.global_position) / _current_move_speed
 	tween.tween_property(self, "global_position", center.global_position, entrance_to_center_duration)\
 			.from(entrance.global_position)
 	tween.parallel().tween_callback(_force_direction.bind(Vector2.DOWN))
 	
 	# 4. Move from center to home position
 	if home_node != center:
-		var center_to_home_duration: float = center.global_position.distance_to(home_node.global_position) / current_move_speed
+		var center_to_home_duration: float = center.global_position.distance_to(home_node.global_position) / _current_move_speed
 		tween.tween_property(self, "global_position", home_node.global_position, center_to_home_duration)\
 				.from(center.global_position)
 		var face_dir = Vector2.LEFT if home_position_group == "home_left" else Vector2.RIGHT
@@ -303,7 +304,7 @@ func _on_intersection_collider_area_entered(area: Area2D):
 		_choose_next_direction(area)
 	elif area.is_in_group("entrance") && current_state == State.DEAD:
 		await _enter_home().finished
-		current_state = queue_state
+		current_state = _queue_state
 		await _exit_home().finished
 
 
@@ -315,12 +316,12 @@ func _on_pill_collected():
 	
 	if level.pills_eaten == pills_required:
 		await _exit_home().finished
-		current_state = queue_state
+		current_state = _queue_state
 
 
 func _on_global_ghost_state_updated(global_state: Ghost.State, scared_mode: bool):
 	if current_state == State.DEAD or current_state == State.HOME:
-		queue_state = global_state
+		_queue_state = global_state
 		return
 	
 	current_state = global_state if not scared_mode else State.SCARED
