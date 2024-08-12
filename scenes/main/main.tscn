@@ -1,10 +1,13 @@
-[gd_scene load_steps=8 format=3 uid="uid://dt74l2dd8283d"]
+[gd_scene load_steps=11 format=3 uid="uid://dt74l2dd8283d"]
 
 [ext_resource type="Script" path="res://scenes/main/main.gd" id="1_bsbh1"]
 [ext_resource type="TileSet" uid="uid://cgitdssnis6gk" path="res://resources/maze.tres" id="1_sfp82"]
 [ext_resource type="PackedScene" uid="uid://wlsnalpplhnr" path="res://scenes/player/player.tscn" id="2_1xgre"]
 [ext_resource type="PackedScene" uid="uid://kcs6kemld525" path="res://scenes/managers/ghost_manager.tscn" id="2_68a4w"]
-[ext_resource type="PackedScene" uid="uid://bn4ntd2etxyom" path="res://scenes/ghosts/ghost.tscn" id="5_13lb8"]
+[ext_resource type="PackedScene" uid="uid://11bm6mg760wu" path="res://scenes/ghosts/blinky/blinky.tscn" id="4_wuid4"]
+[ext_resource type="PackedScene" uid="uid://blm40iaro44uy" path="res://scenes/ghosts/pinky/pinky.tscn" id="5_ce4tx"]
+[ext_resource type="PackedScene" uid="uid://80skguk1srk7" path="res://scenes/ghosts/clyde/clyde.tscn" id="6_xq03h"]
+[ext_resource type="PackedScene" uid="uid://db28xqgbt23md" path="res://scenes/ghosts/inky/inky.tscn" id="7_ppm1a"]
 [ext_resource type="PackedScene" uid="uid://bhyrujaos8nfk" path="res://scenes/managers/pills_manager.tscn" id="8_bnc81"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3rjfs"]
@@ -59,13 +62,13 @@ monitoring = false
 shape = SubResource("CircleShape2D_3rjfs")
 
 [node name="Left" type="Marker2D" parent="Level/Maze/HomePoints" groups=["home_left"]]
-position = Vector2(304.105, 155.781)
+position = Vector2(304, 156)
 
 [node name="Center" type="Marker2D" parent="Level/Maze/HomePoints" groups=["home_center"]]
-position = Vector2(320.105, 155.781)
+position = Vector2(320, 156)
 
 [node name="Right" type="Marker2D" parent="Level/Maze/HomePoints" groups=["home_right"]]
-position = Vector2(336.105, 155.781)
+position = Vector2(336, 156)
 
 [node name="ScatterPoints" type="Node2D" parent="Level/Maze"]
 
@@ -86,12 +89,22 @@ position = Vector2(440, 296)
 [node name="Player" parent="Level/Actors" instance=ExtResource("2_1xgre")]
 position = Vector2(320, 180)
 
-[node name="John" parent="Level/Actors" node_paths=PackedStringArray("scatter_node") instance=ExtResource("5_13lb8")]
-position = Vector2(304, 156)
+[node name="Blinky" parent="Level/Actors" node_paths=PackedStringArray("scatter_node") instance=ExtResource("4_wuid4")]
+position = Vector2(320, 132)
+scatter_node = NodePath("../../Maze/ScatterPoints/TopRight")
+
+[node name="Pinky" parent="Level/Actors" node_paths=PackedStringArray("scatter_node") instance=ExtResource("5_ce4tx")]
+position = Vector2(320, 156)
 initial_state = 3
+scatter_node = NodePath("../../Maze/ScatterPoints/TopLeft")
+
+[node name="Clyde" parent="Level/Actors" node_paths=PackedStringArray("scatter_node") instance=ExtResource("6_xq03h")]
+position = Vector2(336, 156)
+scatter_node = NodePath("../../Maze/ScatterPoints/BottomRight")
+
+[node name="Inky" parent="Level/Actors" node_paths=PackedStringArray("scatter_node") instance=ExtResource("7_ppm1a")]
+position = Vector2(304, 156)
 scatter_node = NodePath("../../Maze/ScatterPoints/BottomLeft")
-home_position_group = "home_left"
-debug_color = "orange"
 
 [node name="GhostManager" parent="Level" instance=ExtResource("2_68a4w")]
 

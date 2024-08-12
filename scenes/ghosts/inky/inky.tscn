@@ -7,6 +7,8 @@
 [node name="Inky" instance=ExtResource("1_f1tkh")]
 script = ExtResource("2_xcqhd")
 initial_state = 3
+home_position_group = "home_left"
+debug_color = "cyan"
 
-[node name="AnimatedSprite2D" parent="." index="3"]
+[node name="AnimatedSprite2D" parent="." index="1"]
 sprite_frames = ExtResource("2_v7ish")

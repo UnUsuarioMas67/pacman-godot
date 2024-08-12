@@ -5,6 +5,4 @@
 
 [node name="Blinky" groups=["blinky"] instance=ExtResource("1_6insg")]
 script = ExtResource("2_ecaqy")
-
-[node name="AnimatedSprite2D" parent="." index="3"]
-animation = &"move_right"
+initial_state = 1
