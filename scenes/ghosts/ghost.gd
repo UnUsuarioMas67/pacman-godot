@@ -103,6 +103,18 @@ func die():
 	current_state = State.DEAD
 
 
+func reset():
+	if _tween:
+		_tween.kill()
+	
+	animated_sprite.play("move_down")
+	_force_direction(Vector2.ZERO)
+	current_state = initial_state
+	if current_state != State.HOME:
+		var entrance: Node2D = get_tree().get_first_node_in_group("entrance") as Node2D
+		global_position = entrance.global_position
+
+
 func set_hurtbox_disabled(is_disabled: bool) -> void:
 	Callable(func (): hurtbox_collision.disabled = is_disabled).call_deferred()
 
