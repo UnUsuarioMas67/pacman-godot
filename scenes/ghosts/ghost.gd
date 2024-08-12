@@ -29,6 +29,8 @@ var _next_direction := Vector2.ZERO
 var _target_position: Vector2
 var _shape_query := PhysicsShapeQueryParameters2D.new()
 var _can_move := true
+var _home_node: Node2D
+var _tween: Tween
 
 @onready var hurtbox_collision = $Hurtbox/CollisionShape2D
 @onready var animated_sprite = $AnimatedSprite2D
@@ -44,6 +46,7 @@ func _ready():
 	intersection_collider.area_entered.connect(_on_intersection_collider_area_entered)
 	
 	_shape_query.shape = collision_shape.shape
+	_home_node = get_tree().get_first_node_in_group(home_position_group)
 	
 	current_state = initial_state
 	
@@ -90,6 +93,8 @@ func _set_state(new_state: State):
 		State.CHASE, State.SCATTER:
 			_current_move_speed = NORMAL_MOVE_SPEED
 		State.HOME:
+			if _home_node:
+				global_position = _home_node.global_position
 			_force_direction(Vector2.DOWN)
 			_can_move = false
 			Callable(_try_leaving_home).call_deferred()
@@ -237,34 +242,30 @@ func _exit_home() -> Tween:
 	# 0. Get nodes
 	var entrance = get_tree().get_first_node_in_group("entrance") as Node2D
 	var center = get_tree().get_first_node_in_group("home_center") as Node2D
-	var home_node = (
-			center if home_position_group == "home_center"
-			else get_tree().get_first_node_in_group(home_position_group) as Node2D
-	)
 	
 	# 1. Move to center
-	var tween := create_tween()
+	_tween = create_tween()
 	
-	if home_node != center:
-		var home_to_center_duration: float = center.global_position.distance_to(home_node.global_position) / _current_move_speed
-		tween.tween_property(self, "global_position", center.global_position, home_to_center_duration)\
-				.from(home_node.global_position)
+	if _home_node != center:
+		var home_to_center_duration: float = center.global_position.distance_to(_home_node.global_position) / _current_move_speed
+		_tween.tween_property(self, "global_position", center.global_position, home_to_center_duration)\
+				.from(_home_node.global_position)
 		var face_dir = Vector2.RIGHT if home_position_group == "home_left" else Vector2.LEFT
-		tween.parallel().tween_callback(_force_direction.bind(face_dir))
+		_tween.parallel().tween_callback(_force_direction.bind(face_dir))
 	
 	# 2. Move outside
 	var center_to_entrance_duration: float = entrance.global_position.distance_to(center.global_position) / _current_move_speed
-	tween.tween_property(self, "global_position", entrance.global_position, center_to_entrance_duration)\
+	_tween.tween_property(self, "global_position", entrance.global_position, center_to_entrance_duration)\
 			.from(center.global_position)
-	tween.parallel().tween_callback(_force_direction.bind(Vector2.UP))
+	_tween.parallel().tween_callback(_force_direction.bind(Vector2.UP))
 	
 	# 3. Choose move direction
-	tween.tween_callback(_choose_next_direction.bind(entrance))
+	_tween.tween_callback(_choose_next_direction.bind(entrance))
 	
 	# 4. Re-enable movement
-	tween.tween_property(self, "_can_move", true, 0)
+	_tween.tween_property(self, "_can_move", true, 0)
 	
-	return tween
+	return _tween
 
 
 func _enter_home() -> Tween:
@@ -274,32 +275,28 @@ func _enter_home() -> Tween:
 	# 1. Get the necessary nodes
 	var entrance = get_tree().get_first_node_in_group("entrance") as Node2D
 	var center = get_tree().get_first_node_in_group("home_center") as Node2D
-	var home_node = (
-			center if home_position_group == "home_center"
-			else get_tree().get_first_node_in_group(home_position_group) as Node2D
-	)
 	
 	# 2. Tween ghost position to entrance
-	var tween := create_tween()
+	_tween = create_tween()
 	
 	var ghost_to_entrance_duration: float = global_position.distance_to(entrance.global_position) / _current_move_speed
-	tween.tween_property(self, "global_position", entrance.global_position, ghost_to_entrance_duration)
+	_tween.tween_property(self, "global_position", entrance.global_position, ghost_to_entrance_duration)
 	
 	# 3. Move from entrance to center of home
 	var entrance_to_center_duration: float = entrance.global_position.distance_to(center.global_position) / _current_move_speed
-	tween.tween_property(self, "global_position", center.global_position, entrance_to_center_duration)\
+	_tween.tween_property(self, "global_position", center.global_position, entrance_to_center_duration)\
 			.from(entrance.global_position)
-	tween.parallel().tween_callback(_force_direction.bind(Vector2.DOWN))
+	_tween.parallel().tween_callback(_force_direction.bind(Vector2.DOWN))
 	
 	# 4. Move from center to home position
-	if home_node != center:
-		var center_to_home_duration: float = center.global_position.distance_to(home_node.global_position) / _current_move_speed
-		tween.tween_property(self, "global_position", home_node.global_position, center_to_home_duration)\
+	if _home_node != center:
+		var center_to_home_duration: float = center.global_position.distance_to(_home_node.global_position) / _current_move_speed
+		_tween.tween_property(self, "global_position", _home_node.global_position, center_to_home_duration)\
 				.from(center.global_position)
 		var face_dir = Vector2.LEFT if home_position_group == "home_left" else Vector2.RIGHT
-		tween.parallel().tween_callback(_force_direction.bind(face_dir))
+		_tween.parallel().tween_callback(_force_direction.bind(face_dir))
 	
-	return tween
+	return _tween
 
 
 func _on_intersection_collider_area_entered(area: Area2D):
