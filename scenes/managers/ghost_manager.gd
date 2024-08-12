@@ -1,4 +1,5 @@
 extends Node
+class_name GhostManager
 
 # SFX
 const SIREN_1: AudioStreamWAV = preload("res://assets/sfx/siren_1.wav")
@@ -27,23 +28,16 @@ func _ready():
 			else CHASE_DURATION
 	)
 	state_timer.timeout.connect(_on_state_timer_timeout)
-	state_timer.start()
 	
 	GameEvents.big_pill_collected.connect(_on_big_pill_collected)
 	scare_timer.wait_time = SCARED_DURATION
 	scare_timer.timeout.connect(_on_scare_timer_timeout)
 	
 	GameEvents.global_ghost_state_updated.connect(_print_debug_info)
-	GameEvents.player_death_started.connect(func(): 
-		asp.stop()
-		state_timer.stop()
-		scare_timer.stop()
-	)
+	GameEvents.player_death_started.connect(_on_player_death_started)
 	
-	await get_tree().physics_frame
-	GameEvents.global_ghost_state_updated.emit(global_state, !scare_timer.is_stopped())
 	var level: Level = owner as Level
-	level.intro_finished.connect(_play_siren)
+	level.intro_finished.connect(_on_level_intro_finished)
 
 
 func _play_siren():
@@ -110,6 +104,19 @@ func _on_scare_timer_timeout():
 	state_timer.paused = false
 	_play_siren()
 	GameEvents.global_ghost_state_updated.emit(global_state, !scare_timer.is_stopped())
+
+
+func _on_level_intro_finished():
+	_play_siren()
+	state_timer.paused = false
+	state_timer.start(state_timer.time_left)
+	GameEvents.global_ghost_state_updated.emit(global_state, !scare_timer.is_stopped())
+
+
+func _on_player_death_started():
+	asp.stop()
+	state_timer.paused = true
+	scare_timer.stop()
 
 
 func _print_debug_info(state: Ghost.State, scared_mode: bool):
