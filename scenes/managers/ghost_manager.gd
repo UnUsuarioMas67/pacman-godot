@@ -67,6 +67,8 @@ func _enter_chase():
 	
 	if wave < SCATTER_WAVES:
 		state_timer.start(CHASE_DURATION)
+	
+	_play_siren()
 
 
 func _enter_scatter():
@@ -80,7 +82,6 @@ func _enter_scatter():
 			else SCATTER_DURATION - 2.0
 	)
 	state_timer.start(scatter_duration)
-	_play_siren()
 
 
 func _on_state_timer_timeout():
