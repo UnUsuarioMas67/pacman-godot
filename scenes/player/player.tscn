@@ -349,8 +349,11 @@ shape = SubResource("CircleShape2D_bmefn")
 
 [node name="EatSound1" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("5_lr3d8")
+volume_db = -7.0
 
 [node name="EatSound2" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("6_tqeod")
+volume_db = -7.0
 
 [node name="DeathSound" type="AudioStreamPlayer" parent="Sounds"]
+volume_db = -4.0

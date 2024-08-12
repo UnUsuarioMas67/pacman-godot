@@ -12,4 +12,4 @@ one_shot = true
 one_shot = true
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-volume_db = -5.0
+volume_db = -8.0

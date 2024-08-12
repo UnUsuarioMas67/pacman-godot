@@ -141,6 +141,8 @@ process_mode = 3
 
 [node name="IntroSound" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("9_s1aob")
+volume_db = -4.0
 
 [node name="GhostRetreatSound" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("11_bej15")
+volume_db = -8.0

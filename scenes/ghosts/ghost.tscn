@@ -51,5 +51,6 @@ debug_color = Color(0.847059, 0.729412, 0.0941176, 0.419608)
 
 [node name="EatenSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_7skyn")
+volume_db = -4.0
 
 [node name="HomeExitTimer" type="Timer" parent="."]
