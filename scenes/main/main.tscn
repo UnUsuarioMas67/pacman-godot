@@ -83,6 +83,7 @@ position = Vector2(320, 132)
 initial_state = 1
 scatter_node = NodePath("../../Maze/ScatterPoints/BottomLeft")
 home_node = NodePath("../../Maze/StartPoints/Right")
+debug_color = "orange"
 
 [node name="GhostManager" parent="Level" instance=ExtResource("2_68a4w")]
 

@@ -16,6 +16,7 @@ const DEAD_MOVE_SPEED := 120.0
 @export var initial_state: State
 @export var scatter_node: Node2D
 @export var home_node: Node2D
+@export_enum("red", "pink", "cyan", "orange") var debug_color := "red"
 
 var is_active := true : set = _set_is_active
 var current_state: State : set = _set_state
@@ -215,14 +216,19 @@ func _on_intersection_collider_area_entered(area: Area2D):
 	)
 	
 	print_rich(
-		"[{0}] ".format([name])
-		+ "[color=orange]Available directions: [/color]" 
-		+ str(directions_to_text)
+		"[color={0}][{1}][/color] ".format([debug_color, name])
+		+ "Available directions: [color=white]" 
+		+ str(directions_to_text) + "[/color]"
 	)
 	print_rich(
-		"[{0}] ".format([name])
-		+ "[color=orange]Next direction: [/color]" 
-		+ directions_to_text[available_directions.find(next_direction)]
+		"[color={0}][{1}][/color] ".format([debug_color, name])
+		+ "Next direction: [color=white]" 
+		+ (
+				directions_to_text[available_directions.find(next_direction)]
+				if available_directions.has(next_direction)
+				else "NONE"
+		)
+		+ "[/color]"
 	)
 
 
