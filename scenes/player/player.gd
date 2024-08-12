@@ -28,7 +28,7 @@ func _physics_process(delta):
 	
 	_get_next_direction()
 	
-	if _is_direction_free(next_direction, delta):
+	if Utils.is_direction_free(self, MOVE_SPEED, shape_query, next_direction, delta):
 		current_direction = next_direction
 	
 	_handle_animation(delta)
@@ -54,7 +54,10 @@ func _set_is_active(value: bool):
 
 
 func _handle_animation(delta):
-	if !_is_direction_free(current_direction, delta) or current_direction == Vector2.ZERO:
+	if (
+			!Utils.is_direction_free(self, MOVE_SPEED, shape_query, current_direction, delta)
+			or current_direction == Vector2.ZERO
+	):
 		animated_sprite.pause()
 	else:
 		animated_sprite.play("default")
@@ -72,12 +75,6 @@ func _get_next_direction():
 		next_direction = Vector2.LEFT
 	elif Input.is_action_pressed("move_up"):
 		next_direction = Vector2.UP
-
-
-func _is_direction_free(direction: Vector2, delta: float) -> bool:
-	shape_query.transform = global_transform.translated(MOVE_SPEED * direction * delta * 2)
-	var result = get_world_2d().direct_space_state.intersect_shape(shape_query)
-	return result.size() == 0
 
 
 func _on_hurtbox_area_entered(area: Area2D):
