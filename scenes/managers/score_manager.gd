@@ -16,6 +16,7 @@ func _ready() -> void:
 	GameEvents.big_pill_collected.connect(_on_big_pill_collected)
 	GameEvents.ghost_eaten.connect(_on_ghost_eaten)
 	GameEvents.global_ghost_state_updated.connect(_on_global_ghost_state_updated)
+	GameEvents.game_over.connect(_on_game_over)
 
 
 func _on_pill_collected() -> void:
@@ -38,3 +39,7 @@ func _on_ghost_eaten(ghost: Ghost) -> void:
 func _on_global_ghost_state_updated(_global_state: Ghost.State, _scared_mode: bool) -> void:
 	if !_scared_mode:
 		ghost_combo = 0
+
+
+func _on_game_over() -> void:
+	UserData.submit_score(score)

@@ -43,6 +43,7 @@ func _initialize_level(new_level: Level):
 		if lives_manager.lives > 0:
 			new_level.play_intro()
 		else:
+			GameEvents.game_over.emit()
 			get_tree().change_scene_to_file("res://scenes/title_screen/title_screen.tscn")
 	)
 	
