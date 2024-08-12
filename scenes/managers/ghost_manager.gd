@@ -34,7 +34,11 @@ func _ready():
 	scare_timer.timeout.connect(_on_scare_timer_timeout)
 	
 	GameEvents.global_ghost_state_updated.connect(_print_debug_info)
-	GameEvents.player_death_started.connect(func(): asp.stop())
+	GameEvents.player_death_started.connect(func(): 
+		asp.stop()
+		state_timer.stop()
+		scare_timer.stop()
+	)
 	
 	await get_tree().physics_frame
 	GameEvents.global_ghost_state_updated.emit(global_state, !scare_timer.is_stopped())
