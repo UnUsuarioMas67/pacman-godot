@@ -9,7 +9,7 @@ func _ready():
 			get_tree().reload_current_scene()
 	)
 	
-	begin()
+	#begin()
 
 
 func begin():
@@ -20,11 +20,15 @@ func begin():
 	for ghost in ghosts:
 		ghost.is_active = false
 	
+	get_tree().paused = true
+	
 	await get_tree().create_timer(3.0).timeout
 	
 	player.is_active = true
 	for ghost in ghosts:
 		ghost.is_active = true
+	
+	get_tree().paused = false
 
 
 func _on_player_died():

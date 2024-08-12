@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://bn4ntd2etxyom"]
+[gd_scene load_steps=7 format=3 uid="uid://bn4ntd2etxyom"]
 
 [ext_resource type="Script" path="res://scenes/ghosts/ghost.gd" id="1_528wb"]
 [ext_resource type="PackedScene" uid="uid://qhetx041xrm2" path="res://scenes/warp/warp_component.tscn" id="2_5w6a5"]
@@ -10,29 +10,18 @@ size = Vector2(14, 14)
 [sub_resource type="CircleShape2D" id="CircleShape2D_gfehe"]
 radius = 6.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_r4sdf"]
+radius = 6.0
+
 [node name="Ghost" type="CharacterBody2D" groups=["ghost"]]
 z_index = 2
 collision_layer = 4
 motion_mode = 1
 wall_min_slide_angle = 0.0
 script = ExtResource("1_528wb")
-initial_state = 1
-
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-path_desired_distance = 7.0
-target_desired_distance = 7.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 shape = SubResource("RectangleShape2D_lrcld")
-
-[node name="ColorRect" type="ColorRect" parent="."]
-visible = false
-offset_left = -7.0
-offset_top = -7.0
-offset_right = 7.0
-offset_bottom = 7.0
-color = Color(0.823529, 0, 0.176471, 1)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = ExtResource("2_81ade")
@@ -48,7 +37,13 @@ monitoring = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
 shape = SubResource("CircleShape2D_gfehe")
 
-[node name="WarpComponent" parent="." instance=ExtResource("2_5w6a5")]
+[node name="IntersectionCollider" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 32
+monitorable = false
 
-[node name="NavUpdateTimer" type="Timer" parent="."]
-wait_time = 0.1
+[node name="CollisionShape2D" type="CollisionShape2D" parent="IntersectionCollider"]
+shape = SubResource("CircleShape2D_r4sdf")
+debug_color = Color(0.847059, 0.729412, 0.0941176, 0.419608)
+
+[node name="WarpComponent" parent="." instance=ExtResource("2_5w6a5")]

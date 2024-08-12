@@ -46,12 +46,12 @@ func _set_global_state(new_state: Ghost.State):
 	var ghosts = get_tree().get_nodes_in_group("ghost") as Array[Ghost]
 	for ghost in ghosts:
 		if (
-			(ghost.current_state == Ghost.State.DEAD or ghost.current_state == Ghost.State.IDLE)
+			(ghost.current_state == Ghost.State.DEAD or ghost.current_state == Ghost.State.HOME)
 			and global_state == Ghost.State.SCARED
 		):
 			ghost.queue_state = prev_global_state
 			continue
-		if ghost.current_state == Ghost.State.DEAD or ghost.current_state == Ghost.State.IDLE:
+		if ghost.current_state == Ghost.State.DEAD or ghost.current_state == Ghost.State.HOME:
 			ghost.queue_state = global_state
 			continue
 		
