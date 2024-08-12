@@ -35,4 +35,5 @@ func _on_ghost_eaten() -> void:
 
 
 func _on_global_ghost_state_updated(_global_state: Ghost.State, _scared_mode: bool) -> void:
-	ghost_combo = 0
+	if !_scared_mode:
+		ghost_combo = 0
