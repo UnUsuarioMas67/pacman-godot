@@ -9,3 +9,4 @@ signal player_death_finished
 signal global_ghost_state_updated(global_state: Ghost.State, scared_mode: bool)
 signal ghost_eaten
 signal ghost_reformed
+signal level_changed(new_level: int)
