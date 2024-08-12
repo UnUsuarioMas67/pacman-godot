@@ -44,6 +44,11 @@ folder_colors={
 "res://scenes/player/": "yellow"
 }
 
+[gui]
+
+theme/custom="res://resources/my_theme.tres"
+theme/custom_font="res://assets/fonts/emulogic-font/Emulogic-zrEw.ttf"
+
 [input]
 
 move_up={
