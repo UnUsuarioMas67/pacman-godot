@@ -80,7 +80,7 @@ func _on_chase_timer_timeout():
 			if wave < 3
 			else SCATTER_DURATION - 2.0
 	)
-	scatter_timer.start()
+	scatter_timer.start(scatter_duration)
 	
 	print('Scatter Wave: ' + str(wave))
 
