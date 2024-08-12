@@ -1,0 +1,79 @@
+[gd_scene load_steps=4 format=3 uid="uid://bw7thqbtqe07l"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ak7hb"]
+font_size = 32
+font_color = Color(1, 1, 0.152941, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_874c6"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_3lrxu"]
+font_size = 8
+font_color = Color(1, 1, 0.152941, 1)
+
+[node name="TitleScreen" type="CanvasLayer"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="Title" type="PanelContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Title"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Title/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/Title/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Pac-Man"
+label_settings = SubResource("LabelSettings_ak7hb")
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="MarginContainer/Title/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "in Godot"
+label_settings = SubResource("LabelSettings_874c6")
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Press "
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Enter "
+label_settings = SubResource("LabelSettings_3lrxu")
+horizontal_alignment = 1
+
+[node name="Label3" type="Label" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "to start"
+horizontal_alignment = 1
