@@ -24,7 +24,7 @@ var is_active := true : set = _set_is_active
 
 var _queue_state: State
 var _current_move_speed := NORMAL_MOVE_SPEED
-var _current_direction := Vector2.LEFT
+var _current_direction := Vector2.ZERO
 var _next_direction := Vector2.ZERO
 var _target_position: Vector2
 var _shape_query := PhysicsShapeQueryParameters2D.new()
@@ -49,6 +49,8 @@ func _ready():
 	_home_node = get_tree().get_first_node_in_group(home_position_group)
 	
 	current_state = initial_state
+	if current_state != State.HOME:
+		_choose_next_direction(self)
 	
 	# PRINT SCATTER NODE WARNING
 	assert(!!scatter_node, "[{0}] does not have a Scatter Node assigned".format([name]))
@@ -186,7 +188,7 @@ func _get_scatter_target() -> Vector2:
 	return scatter_node.global_position
 
 
-func _get_available_directions(node) -> Array[Vector2]:
+func _get_available_directions(node: Node2D) -> Array[Vector2]:
 	var directions: Array[Vector2] = [Vector2.UP, Vector2.LEFT, Vector2.DOWN, Vector2.RIGHT]
 	var result = directions.filter(func(dir):
 		# this line makes sure the query detects the ghost home gate only when checking the down direction and is not death
@@ -221,7 +223,7 @@ func _get_best_direction(direction_list: Array[Vector2]) -> Vector2:
 	return chosen_direction
 
 
-func _choose_next_direction(node: Area2D) -> void:
+func _choose_next_direction(node: Node2D) -> void:
 	_target_position = _get_target_position()
 	
 	var available_directions = _get_available_directions(node).filter(func(dir):
