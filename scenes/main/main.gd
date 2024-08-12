@@ -35,7 +35,7 @@ func _initialize_level(new_level: Level):
 	new_level.play_intro()
 	new_level.stopped.connect(func():
 		if lives_manager.lives > 0:
-			level.play_intro()
+			new_level.play_intro()
 		else:
 			get_tree().reload_current_scene()
 	)
