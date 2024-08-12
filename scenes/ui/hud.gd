@@ -6,7 +6,7 @@ const LIFE_SCENE: PackedScene = preload("res://scenes/ui/life.tscn")
 @export var lives_manager: LivesManager
 
 @onready var score_value: Label = %ScoreValue
-@onready var lives_container: HBoxContainer = %Lives
+@onready var lives_container: HBoxContainer = %LivesContainer
 
 
 func _ready() -> void:

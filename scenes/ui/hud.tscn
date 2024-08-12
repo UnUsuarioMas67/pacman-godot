@@ -71,9 +71,9 @@ layout_mode = 2
 size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxTexture_cwyas")
 
-[node name="Lives" type="HBoxContainer" parent="PanelContainer3"]
+[node name="LivesContainer" type="HBoxContainer" parent="PanelContainer3"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Life" parent="PanelContainer3/Lives" instance=ExtResource("3_brulj")]
+[node name="Life" parent="PanelContainer3/LivesContainer" instance=ExtResource("3_brulj")]
 layout_mode = 2
