@@ -203,7 +203,16 @@ func _force_direction(direction: Vector2):
 func _handle_animation():
 	if current_state == State.SCARED:
 		animated_sprite.play("scared")
+		
+		var scare_timer: Timer = Globals.ghost_manager.scare_timer
+		if !scare_timer.is_stopped() and scare_timer.time_left <= 3.0:
+			_start_blink()
+		else: 
+			_stop_blink()
+		
 		return
+	
+	_stop_blink()
 	
 	var anim_prefix = "move" if current_state != State.DEAD else "dead"
 	var anim_suffix = "down"
@@ -367,6 +376,7 @@ func _stop_blink() -> void:
 		return
 	
 	_blink_tween.kill()
+	animated_sprite.show()
 #endregion
 
 #region Signal Callables
