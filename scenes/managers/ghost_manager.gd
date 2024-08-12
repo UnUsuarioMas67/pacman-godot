@@ -35,6 +35,7 @@ func _ready():
 	
 	GameEvents.global_ghost_state_updated.connect(_print_debug_info)
 	GameEvents.player_death_started.connect(_stop)
+	GameEvents.level_completed.connect(_stop)
 	
 	await get_tree().process_frame
 	Globals.current_level.intro_finished.connect(_start)
