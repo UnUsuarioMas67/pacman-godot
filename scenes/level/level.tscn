@@ -52,19 +52,6 @@ text = "00
 "
 horizontal_alignment = 1
 
-[node name="ColorRect" type="ColorRect" parent="."]
-z_index = 10
-offset_right = 208.0
-offset_bottom = 320.0
-color = Color(0, 0, 0, 1)
-
-[node name="ColorRect2" type="ColorRect" parent="."]
-z_index = 10
-offset_left = 432.0
-offset_right = 640.0
-offset_bottom = 320.0
-color = Color(0, 0, 0, 1)
-
 [node name="Maze" type="TileMap" parent="." groups=["maze"]]
 tile_set = ExtResource("1_fw2l1")
 format = 2
