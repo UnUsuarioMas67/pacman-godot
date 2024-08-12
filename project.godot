@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 Globals="*res://autoload/globals.gd"
 GameEvents="*res://autoload/game_events.gd"
 Utils="*res://autoload/utils.gd"
+UserData="*res://autoload/user_data.gd"
 
 [display]
 
