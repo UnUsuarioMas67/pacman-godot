@@ -1,0 +1,115 @@
+[gd_scene load_steps=7 format=3 uid="uid://b1577hkc88rwj"]
+
+[ext_resource type="Script" path="res://autoload/game_over_screen.gd" id="1_kaara"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_emspb"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ld67e"]
+font_size = 8
+font_color = Color(0.32549, 0.32549, 1, 1)
+
+[sub_resource type="Animation" id="Animation_5p8hk"]
+resource_name = "display"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.5, 3),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"_show_high_score"
+}, {
+"args": [],
+"method": &"_emit_ended_signal"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_3eoj0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ujqna"]
+_data = {
+"RESET": SubResource("Animation_3eoj0"),
+"display": SubResource("Animation_5p8hk")
+}
+
+[node name="GameOverScreen" type="CanvasLayer"]
+layer = 3
+visible = false
+script = ExtResource("1_kaara")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 640.0
+offset_bottom = 320.0
+color = Color(0, 0, 0, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="Label" type="Label" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Game Over"
+label_settings = SubResource("LabelSettings_emspb")
+
+[node name="HighScore" type="VBoxContainer" parent="MarginContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+alignment = 1
+
+[node name="Title" type="Label" parent="MarginContainer/HighScore"]
+layout_mode = 2
+text = "New High Score"
+label_settings = SubResource("LabelSettings_ld67e")
+horizontal_alignment = 1
+
+[node name="HighScoreValue" type="Label" parent="MarginContainer/HighScore"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+text = "0000000"
+horizontal_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ujqna")
+}

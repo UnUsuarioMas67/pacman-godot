@@ -21,6 +21,7 @@ Globals="*res://autoload/globals.gd"
 GameEvents="*res://autoload/game_events.gd"
 Utils="*res://autoload/utils.gd"
 UserData="*res://autoload/user_data.gd"
+GameOverScreen="*res://autoload/game_over_screen.tscn"
 
 [display]
 
