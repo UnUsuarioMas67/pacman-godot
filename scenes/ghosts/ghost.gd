@@ -9,8 +9,8 @@ enum State {
 	DEAD = 4,
 }
 
-const NORMAL_MOVE_SPEED := 55.0
-const SCARED_MOVE_SPEED := 34.0
+const NORMAL_MOVE_SPEED := 50.0
+const SCARED_MOVE_SPEED := 30.0
 const DEAD_MOVE_SPEED := 120.0
 
 @export var initial_state: State
