@@ -11,6 +11,9 @@ var new_high_score: bool = false
 
 func _ready() -> void:
 	UserData.high_score_updated.connect(_on_high_score_updated)
+	
+	hide()
+	high_score.hide()
 
 
 func display() -> void:

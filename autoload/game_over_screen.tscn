@@ -8,6 +8,21 @@
 font_size = 8
 font_color = Color(0.32549, 0.32549, 1, 1)
 
+[sub_resource type="Animation" id="Animation_3eoj0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
 [sub_resource type="Animation" id="Animation_5p8hk"]
 resource_name = "display"
 length = 3.0
@@ -39,21 +54,6 @@ tracks/1/keys = {
 "args": [],
 "method": &"_emit_ended_signal"
 }]
-}
-
-[sub_resource type="Animation" id="Animation_3eoj0"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:visible")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ujqna"]
@@ -89,7 +89,6 @@ label_settings = SubResource("LabelSettings_emspb")
 
 [node name="HighScore" type="VBoxContainer" parent="MarginContainer"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
