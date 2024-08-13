@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-const MOVE_SPEED := 76.0
+const MOVE_SPEED := 70.0
 
 @export var is_invincible := false
 
