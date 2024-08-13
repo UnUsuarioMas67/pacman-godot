@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bw7thqbtqe07l"]
+[gd_scene load_steps=6 format=3 uid="uid://bw7thqbtqe07l"]
 
 [ext_resource type="Script" path="res://scenes/title_screen/title_screen.gd" id="1_apc2b"]
 
@@ -11,6 +11,10 @@ font_color = Color(1, 1, 0.152941, 1)
 [sub_resource type="LabelSettings" id="LabelSettings_3lrxu"]
 font_size = 8
 font_color = Color(1, 1, 0.152941, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_fcckq"]
+font_size = 8
+font_color = Color(0.32549, 0.32549, 1, 1)
 
 [node name="TitleScreen" type="CanvasLayer"]
 script = ExtResource("1_apc2b")
@@ -59,24 +63,49 @@ text = "in Godot"
 label_settings = SubResource("LabelSettings_874c6")
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 20
+
+[node name="PressStart" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PressStart"]
 layout_mode = 2
 text = "Press "
 horizontal_alignment = 1
 
-[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/PressStart"]
 layout_mode = 2
 text = "Enter "
 label_settings = SubResource("LabelSettings_3lrxu")
 horizontal_alignment = 1
 
-[node name="Label3" type="Label" parent="MarginContainer/HBoxContainer"]
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/PressStart"]
 layout_mode = 2
 text = "to start"
+horizontal_alignment = 1
+
+[node name="HighScore" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+alignment = 1
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer/HighScore"]
+layout_mode = 2
+text = "High Score"
+label_settings = SubResource("LabelSettings_fcckq")
+horizontal_alignment = 1
+
+[node name="HighScoreValue" type="Label" parent="MarginContainer/VBoxContainer/HighScore"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+text = "0000000"
 horizontal_alignment = 1
