@@ -11,6 +11,8 @@ config_version=5
 [application]
 
 config/name="Pac-Man Clone"
+config/description="A recreation of Pac-Man made in Godot Engine"
+config/version="1.0"
 run/main_scene="res://scenes/title_screen/title_screen.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
