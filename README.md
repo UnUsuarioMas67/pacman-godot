@@ -4,6 +4,8 @@ A Pac-Man clone that I made for the [20 Games Challenge](https://20_games_challe
 
 The Ghost were by far the hardest part of this project, I tried to make their AI as close to the original as I possible. Overall I'm happy with how this project turned out.
 
+For Godot 4.3.
+
 ![](preview.png)
 
 ## Resources Used
