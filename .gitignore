@@ -5,3 +5,4 @@ exports/
 
 /sprites/ase files
 *.ase
+export_presets.cfg
